@@ -28,7 +28,7 @@ Here is a list of some common R error messages and their explanations, along wit
 
 -   `Error in x[y] : object of type 'closure' is not subsettable` - This means that the object being indexed is a function, not a vector or data frame. The solution is to check the object being indexed and make sure it is a vector or data frame, or use the appropriate function to extract the desired information.
 
--   `Error in library(x) : there is no package called 'x'` - This means that the R interpreter cannot find the specified package. The solution is to check the spelling of the package name and make sure it is installed on your system.
+-   `Error in library(x) : there is no package called 'x'` - This means that the R interpreter cannot find the specified package. The solution is to check the spelling and case of the package name and make sure it is installed on your system.
 
 -   `Error in file(file, ifelse(append, "a", "w")) : cannot open the connection` - This means that R cannot open the specified file. The solution is to check the file path and permissions, and make sure that the file is accessible by R.
 
