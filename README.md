@@ -22,7 +22,7 @@ Below is a collection of common techniques and best practices for debugging R co
 
 Here is a list of some common R error messages and their explanations, along with solutions to fix them:
 
--   `Error: object 'x' not found` - This means that R cannot find the object 'x' in the current environment. The solution is to check the spelling of the object, and make sure it has been defined or loaded properly.
+-   `Error: object 'x' not found` - This means that R cannot find the object 'x' in the current environment. The solution is to check the spelling (and case!) of the object, and make sure it has been defined or loaded properly.
 
 -   `Error in if (x) { : missing value where TRUE/FALSE needed` - This means that the if (or any conditional) statement is trying to evaluate a missing value. The solution is to check the values passed to the if (or any conditional) statement and ensure that they are not missing.
 
