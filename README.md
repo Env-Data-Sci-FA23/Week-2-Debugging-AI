@@ -84,6 +84,6 @@ In the `lessons` folder of this repository, you will find the following files:
 
 3)  `ai_models_assignment.Rmd` - Coming before Wednesday's class
 
-[**Cited Source**]{.underline}
+**Cited Source**
 
 Santiago Valdarrama [@Santiago], (2023, January 6). *11 ways ChatGPT saves me hours of work every day, and why you'll never outcompete those who use AI effectively. A list for those who write code:* [Tweet thread]. <https://twitter.com/svpino/status/1611357154514186241?s=46&t=BH_LjPb_sC-wByPLLnoc1A>
