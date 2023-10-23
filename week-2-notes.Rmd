@@ -1,0 +1,48 @@
+---
+title: "Week-2-notes"
+author: "Erika Lee"
+date: "2023-10-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+source("setup.R")
+```
+
+## Week 2 Notes
+
+### How to fix errors:
+
+-   How to see which type of data is in a column: glimpse(dataname) - tidyverse version of viewing types of data
+
+-   How to create a new column: Example
+
+    -   cpf \<- cpr %\>%
+
+        mutate(year = lubridate::year(Date) \> "2022") - mutating then filtering our the years that are greater than 2022...
+
+But first, have to make Date a year...
+
+-   mutate (Date = lubridate::dmy(Date))
+
+-   Therefore:
+
+    mutate(Date = lubridate::dmy(Date)) %\>%
+
+    mutate(year = lubridate::year(Date)) %\>%
+
+    filter(year \> "2022") %\>%
+
+    filter(grepl("Poudre", site))
+
+    \*\*grepl() - is a way of filtering a word within a column (site is the column, Poudre is the word that exists within the column)
+
+-   Package load is reloading each package every time you run the code, therefore... make sure to comment out the package.Load code line after it has been run.
+
+-   Make sure code chunks are closed, and are in fact IN a code chunk. And, don't have nested code chunks
+
+-   R doesn't like spaces... keep a system for lowercase and use either an \_ or . or -, and be consistent with this!
