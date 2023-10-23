@@ -19,15 +19,15 @@ There are a total of **5 fixes** you need to make to the workflow below. To comp
 
 **List here the 5 errors you had to fix in this workflow:**
 
-1.  
+1.  Install "palmerpenguins"
 
-2.  
+2.  Use library function
 
-3.  
+3.  Need to add color for ggplot
 
-4.  
+4.  Name new df 'adelie'
 
-5.  
+5.  Adelie was misspelled
 
 ## The workflow you need to fix begins here:
 
@@ -53,16 +53,14 @@ penguins %>%
 Now we want to visualize the relationship between body mass and bill length *among species*:
 
 ```{r warning=FALSE}
-penguins %>%
-  ggplot() +
-  geom_point(aes(x = body_mass_g, y = bill_length_mm))
+ggplot(data=penguins, aes(x = body_mass_g, y = bill_length_mm)) +
+  geom_point(aes(color=species))
 ```
 
 Finally, let's create a new data frame called `adelie` that contains data for just the *Adelie* penguin species, and then visualize the differences in that species' body mass among islands.
 
 ```{r}
-penguins %>% 
-  filter(species == 'Adelei')
+adelie <- filter(penguins, species == "Adelie")
 ```
 
 ```{r warning=FALSE}
