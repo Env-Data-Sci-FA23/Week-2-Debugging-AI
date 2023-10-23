@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 ```
 
 ## The Assignment:
@@ -19,9 +19,9 @@ There are a total of **5 fixes** you need to make to the workflow below. To comp
 
 **List here the 5 errors you had to fix in this workflow:**
 
-1.  Install "palmerpenguins"
+1.  Install and use library function for all necessary packages
 
-2.  Use library function
+2.  
 
 3.  Need to add color for ggplot
 
