@@ -82,10 +82,12 @@ In the `lessons` folder of this repository, you will find the following files to
 
 2)  `code_debugging_assignment.Rmd` - This is an R markdown document that was used to make `code_debugging_output.html`. However, we have **purposefully added mistakes to it**. Your assignment will be to fix these mistakes so that it can once again produce the rendered document provided. **Save a copy of this file as 'code_debugging_YOURNAME.Rmd' with the fixed code, the 5 things you found were incorrect, and knit it to HTML so we can see your correct rendered version**
 
-3)  `ai_models_assignment.Rmd` - Follow the questions/prompts in this document to post to ChatGPT, and paste both the question you asked the chat bot and the chat bot's response in this .Rmd.
+3)  `ai_models_assignment.Rmd` - Follow the questions/prompts in this document to post to ChatGPT, and paste both the question you asked the chat bot and the chat bot's response in this .Rmd. **Save a copy of this file as 'ai_models_YOURNAME.Rmd' to put your responses in**
 
 #### When you have completed both the code debugging assignment and the ai models assignment, push all your completed assignment files to GitHub and submit a pull request
 Its okay if you push multiple versions of code/documents to GitHub, even after you submit a pull request! It will just automatically update your pull request.
+
+
 
 **Cited Source**
 
