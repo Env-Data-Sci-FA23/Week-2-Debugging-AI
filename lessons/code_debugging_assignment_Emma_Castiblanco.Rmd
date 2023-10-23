@@ -21,7 +21,7 @@ There are a total of **5 fixes** you need to make to the workflow below. To comp
 
 1.  Install and use library function for all necessary packages
 
-2.  
+2.  Needed to change echo= TRUE to echo =FALSE
 
 3.  Need to add color for ggplot
 
