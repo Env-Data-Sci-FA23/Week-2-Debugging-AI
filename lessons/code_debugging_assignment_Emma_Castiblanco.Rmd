@@ -36,7 +36,6 @@ In this workflow, we want to explore the Palmer Penguins data set collected at t
 We read in the data and initially explore its structure:
 
 ```{r}
-  install.packages("palmerpenguins") 
   library(palmerpenguins)
 data("penguins") 
 summary(penguins)
@@ -45,8 +44,8 @@ summary(penguins)
 Let's first explore body mass among all the penguin species with a histogram:
 
 ```{r warning=FALSE}
-penguins %>% 
-  ggplot()+
+  library("ggplot2")
+  ggplot(penguins)+
   geom_histogram(aes(x = body_mass_g))
 ```
 
@@ -60,6 +59,7 @@ ggplot(data=penguins, aes(x = body_mass_g, y = bill_length_mm)) +
 Finally, let's create a new data frame called `adelie` that contains data for just the *Adelie* penguin species, and then visualize the differences in that species' body mass among islands.
 
 ```{r}
+library("tidyverse")
 adelie <- filter(penguins, species == "Adelie")
 ```
 
