@@ -1,12 +1,12 @@
 ---
 title: "Code Review/Debugging Assignment"
-author: 
+author: Ashlee Patacsil-Hardin
 date: "`r Sys.Date()`"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = F, message = FALSE)
 ```
 
 ## The Assignment:
@@ -19,15 +19,15 @@ There are a total of **5 fixes** you need to make to the workflow below. To comp
 
 **List here the 5 errors you had to fix in this workflow:**
 
-1.  
+1.  For the first code chunk, you had to load in the package Palmer Penguins to retrieve the data and load it into your global environment. You also had to load in the package tidyverse.
 
-2.  
+2.  When visualizing the relationship between body mass and bill length among species, I added (col=species) to differentiate the species by color.
 
-3.  
+3.  When creating a new data frame called `adelie`, you had to use \<- to create the new data set on the first line of code in that code chunk
 
-4.  
+4.  When creating a new data frame, Adelie was spelled wrong (Adelei).
 
-5.  
+5.  In the final HTML, the summary section is visible, to replicate this, you had to put summary(penguins) in its own code chunk with {r warning=FALSE}. You also had to write echo=F for the code chunks to not show.
 
 ## The workflow you need to fix begins here:
 
@@ -36,7 +36,13 @@ In this workflow, we want to explore the Palmer Penguins data set collected at t
 We read in the data and initially explore its structure:
 
 ```{r}
+library(palmerpenguins)
+library(tidyverse)
 data("penguins")
+
+```
+
+```{r warning=FALSE}
 summary(penguins)
 ```
 
@@ -53,14 +59,14 @@ Now we want to visualize the relationship between body mass and bill length *amo
 ```{r warning=FALSE}
 penguins %>%
   ggplot() +
-  geom_point(aes(x = body_mass_g, y = bill_length_mm))
+  geom_point(aes(x = body_mass_g, y = bill_length_mm, col=species))
 ```
 
 Finally, let's create a new data frame called `adelie` that contains data for just the *Adelie* penguin species, and then visualize the differences in that species' body mass among islands.
 
 ```{r}
-penguins %>% 
-  filter(species == 'Adelei')
+adelie <- penguins %>% 
+filter(species == 'Adelie')
 ```
 
 ```{r warning=FALSE}
