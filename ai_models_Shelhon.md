@@ -1,0 +1,78 @@
+ai_model_assignment
+================
+Katie Willi and Caitlin Mothes
+2023-10-23
+
+For this assignment, copy and paste both **your question to the chat
+bot** as well as **the chat bot’s response** below each assignment
+question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk
+    of code does:
+
+``` r
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:**
+
+**Chat bot response:**
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:**
+
+**Chat bot response:**
+
+3.  Is the AI model’s response to Question 2 in the {tidyverse} style
+    (e.g., does the response use any {tidyverse} functions, the `%>%`
+    pipe, etc.)?
+
+**Question to chat bot:**
+
+**Chat bot response:**
+
+4.  If the AI model’s response did not use the {tidyverse}, ask it to
+    convert the code into {tidyverese} style. If your response already
+    used the {tidyverse}, make a guess as to why it might have already
+    done so. *\<— just a thought experiment, don’t worry too much about
+    how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in
+tidyverse)*:
+
+**Chat bot response:**
+
+5.  Does the code that ChatGPT put together for you work? If it doesn’t,
+    ask the chat bot to fix it. Does it work now?
+
+6.  Ask the chat bot if there is a significant difference in bill length
+    across Adelie penguin sexes in the {palmerpenguins} data set (using
+    R).
+
+**Question posed to chat bot:**
+
+**Chat bot response:**
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio
+    console to run it).* If not, what was wrong with it’s answer?
+
+8.  Did the chat bot’s response include an assessment of whether the
+    Adelie penguins data met the assumptions of the statistical test
+    used in the response? (e.g., test for normality or equal variances)?
+    If not, pose the question again to test for the assumptions and
+    paste the new question/response below.
+
+**Question to chat bot:**
+
+**Chat bot response:**
