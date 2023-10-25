@@ -1,0 +1,209 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:** Search the following code for errors: 
+
+**Chat bot response:** The provided R code appears to be free of syntax errors, but there is a logical issue with the step_one function. In R, functions do not modify their input variables in the calling environment by default. Therefore, the modification you make to x inside the step_one function will not affect the original data frame penguins. To correct this, you can modify the function to return the modified character vector and store it in a new variable. 
+
+Here's the corrected code:
+
+{r}
+Copy code
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  return(x)
+}
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+With this change, the step_one function now returns the modified character vector, which is stored in species_list. This way, you obtain the desired results without modifying the original data frame penguins.
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:** simplify the following code: C&P'd code 
+
+**Chat bot response:** 
+You can simplify the code by avoiding the step_one function and using the subset function to directly filter the penguins data frame. Here's a simplified version of your code:
+
+{r}
+Copy code
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- subset(penguins, species == "Adelie")
+This code accomplishes the same task but in a more concise way. It directly filters the penguins data frame to select rows where the species is "Adelie" using the subset function.
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot:** is the code previously written in tidyverse style?
+
+**Chat bot response:** 
+
+The code you provided is not written in the tidyverse style, which is a set of packages and conventions for data manipulation in R that includes packages like dplyr, ggplot2, and others.
+
+The tidyverse style generally emphasizes a pipeline approach using %>% (the pipe operator) and functions from tidyverse packages for data manipulation. The code you provided uses base R functions like lapply, unlist, and which for data manipulation and does not utilize the pipe operator or tidyverse functions.
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*: with my previous question it automatically provided code for tidyverse 
+
+**Chat bot response:** Here's an example of how you could rewrite your code in the tidyverse style using the dplyr package:
+
+{r}
+Copy code
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+In this code, we load the dplyr package and then use the %>% operator along with the filter function to create a pipeline that filters the penguins data frame to select rows where the species is "Adelie." This follows the tidyverse style of data manipulation.
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+Yes, it works. 
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:** 
+Is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R)?
+
+**Chat bot response:** 
+To determine if there is a significant difference in bill length across Adelie penguin sexes in the palmerpenguins data set using R, you can perform a statistical test, such as a t-test or ANOVA, depending on your specific research question and the assumptions you are willing to make about the data.
+
+Here's an example of how to perform a t-test to compare bill length between male and female Adelie penguins:
+
+{r}
+Copy code
+library(palmerpenguins)
+
+data("penguins")
+
+# Filter for Adelie penguins
+adelie_penguins <- subset(penguins, species == "Adelie")
+
+# Perform a t-test
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the results
+print(t_test_result)
+In this code, we first filter the data to select only Adelie penguins. Then, we perform a t-test using the t.test function to compare the bill lengths between the male and female Adelie penguins. The null hypothesis for this test is that there is no significant difference in bill length between the sexes.
+
+You can also perform an analysis of variance (ANOVA) if you want to compare bill lengths among more than two groups (e.g., if there are multiple levels of the sex variable). The choice of test depends on your research question and the structure of your data. The t-test is suitable for comparing two groups, while ANOVA is used for comparing multiple groups.
+
+Make sure to examine the results of the test, including the p-value, to determine whether the difference in bill length between sexes is statistically significant. A small p-value (typically less than 0.05) indicates that there is a significant difference.
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+# Filter for Adelie penguins
+adelie_penguins <- subset(penguins, species == "Adelie")
+
+# Perform a t-test
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the results
+print(t_test_result)
+```
+Yes, the code produced works. 
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:** Did the previous response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)?
+
+**Chat bot response:** I apologize for not including an assessment of the assumptions of the statistical test in my previous response. It's important to check whether the assumptions of the t-test are met before interpreting the results. The two key assumptions for a t-test are:
+
+Normality: The data should follow a roughly normal distribution within each group.
+Equal Variance (Homogeneity of Variance): The variances within the groups being compared should be approximately equal.
+To assess these assumptions, you can perform tests and visual checks. Here's how you can assess these assumptions in your analysis:
+
+1. Normality:
+
+You can visually check for normality by creating histograms or Q-Q plots for the bill length data within each group (male and female).
+You can also perform formal tests for normality, such as the Shapiro-Wilk test, using shapiro.test().
+{r}
+Copy code
+# Normality tests
+shapiro.test(adelie_penguins$bill_length_mm[adelie_penguins$sex == "Male"])
+shapiro.test(adelie_penguins$bill_length_mm[adelie_penguins$sex == "Female"])
+```{r}
+shapiro.test(adelie_penguins$bill_length_mm[adelie_penguins$sex == "Male"])
+shapiro.test(adelie_penguins$bill_length_mm[adelie_penguins$sex == "Female"])
+```
+
+
+2. Equal Variance:
+
+You can visually check for equal variance by creating boxplots for the bill length data within each group.
+You can also perform a formal test for equal variance, such as Levene's test, using leveneTest() from the car package.
+{r}
+Copy code
+library(car)
+leveneTest(bill_length_mm ~ sex, data = adelie_penguins)
+If the p-values from the normality tests and Levene's test are not significant (p > 0.05), it suggests that the assumptions are met, and you can interpret the results of the t-test with more confidence. However, if the assumptions are not met, you may need to consider non-parametric tests or transformations of the data to address the violation of assumptions.
+
+Assessing the assumptions is an important part of conducting hypothesis tests to ensure that the results are valid and reliable.
+
+```{r}
+library(stats)
+# Check for missing values
+sum(is.na(adelie_penguins$bill_length_mm))
+
+# Remove missing values
+adelie_penguins_no_na <- adelie_penguins[!is.na(adelie_penguins$bill_length_mm), ]
+
+# Q-Q plot for male Adelie penguins
+qqnorm(adelie_penguins_no_na$bill_length_mm[adelie_penguins_no_na$sex == "Male"])
+qqline(adelie_penguins_no_na$bill_length_mm[adelie_penguins_no_na$sex == "Male"])
+
+# Q-Q plot for female Adelie penguins
+qqnorm(adelie_penguins_no_na$bill_length_mm[adelie_penguins_no_na$sex == "Female"])
+qqline(adelie_penguins_no_na$bill_length_mm[adelie_penguins_no_na$sex == "Female"])
+```
+I used chatGPT to try and address the errors I was receiving with y empties or NAs, and it could not help me work through the error even when I tried asking it to provide new code. 
