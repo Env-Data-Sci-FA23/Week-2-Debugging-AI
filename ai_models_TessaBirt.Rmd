@@ -1,0 +1,161 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:** \
+"what does this code chunk in r do?"
+
+**Chat bot response:**
+
+"In summary, this code chunk filters the **`penguins`** dataset to include only the rows where the species is "Adelie" and stores this subset in the **`adelie_penguins`** variable. However, the **`step_one`** function is unnecessary in this code and can be removed without affecting the functionality."
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:**
+
+Can you simplify this code chunk:
+
+**Chat bot response:**
+
+"Certainly! The given code can be simplified as follows:
+
+```{r}
+library(palmerpenguins)
+
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+```
+
+This simplified version achieves the same result as the original code. It directly subsets the **`penguins`** dataset, selecting only the rows where the species is "Adelie" and stores the result in the **`adelie_penguins`** variable. There is no need for the **`step_one`** function or intermediate steps in this case."
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot:**
+
+Is this new simplified code in (tidyverse) style?
+
+**Chat bot response:**
+
+\
+"Yes, the simplified code provided is written in a style consistent with the **tidyverse** philosophy in R. In the tidyverse style, operations are often expressed using functions from packages like **`dplyr`**, which provides a consistent and expressive way to manipulate data frames.
+
+However, the simplified code does not use specific **`dplyr`** functions but instead uses base R subsetting operations. In the tidyverse style, you could achieve the same result using **`dplyr`** functions like this:
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+
+adelie_penguins <- penguins %>% 
+  filter(species == "Adelie")
+```
+
+In this version, the **`%>%`** (pipe) operator is used to pass the **`penguins`** data frame into the **`filter()`** function from the **`dplyr`** package, which filters the rows where the species is "Adelie". This is a more idiomatic way of expressing the operation in the tidyverse style."
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*: same as above\^\^\^
+
+**Chat bot response:** Same as above\^\^\^
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+    The code provided by ChatGPT does work!
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:**
+
+Is there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R)?
+
+**Chat bot response:**
+
+\
+"To assess whether there is a significant difference in bill length across Adelie penguin sexes in the **`palmerpenguins`** dataset using R, you can perform a statistical test, such as a t-test or ANOVA, to compare the means of the bill lengths between male and female Adelie penguins.
+
+Here's how you can conduct a t-test to compare the bill lengths between male and female Adelie penguins:
+
+```{r}
+# Load required libraries
+library(palmerpenguins)
+
+# Subset the Adelie penguins from the dataset
+adelie_penguins <- subset(penguins, species == "Adelie")
+
+# Perform t-test to compare bill lengths between male and female Adelie penguins
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the t-test result
+print(t_test_result)
+
+```
+
+Make sure to interpret the results carefully, considering both the p-value and the context of the data. A low p-value (typically ≤ 0.05) suggests a significant difference in bill lengths between male and female Adelie penguins."
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+    The code chunk it provided does work to perform t-test! (p-value: 4.801e-15)
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:**
+
+"Is there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set using the rstatix package in R? Make sure to check assumptions of the statistical test."
+
+**Chat bot response:**
+
+"Certainly! You can use the **`rstatix`** package in R to perform a t-test and check the assumptions (normality and homogeneity of variance) for the difference in bill length across Adelie penguin sexes. Here's how you can do it:
+
+```{r}
+# Load required libraries
+library(palmerpenguins)
+library(rstatix)
+library(ggplot2)
+
+# Subset the Adelie penguins from the dataset
+adelie_penguins <- subset(penguins, species == "Adelie")
+
+# Check normality using Q-Q plots
+ggplot(adelie_penguins, aes(sample = bill_length_mm)) +
+  geom_qq() +
+  facet_wrap(~sex, scales = "free") +
+  ggtitle("Q-Q Plot: Bill Length by Sex")
+
+# Check homogeneity of variance using Levene's test
+levene_test_result <- adelie_penguins %>%
+  levene_test(bill_length_mm ~ sex)
+
+# Print Levene's test result
+print(levene_test_result)
+
+# Perform t-test if assumptions are met
+t_test_result <- adelie_penguins %>%
+  t_test(bill_length_mm ~ sex, var.equal = TRUE)
+
+# Print the t-test result
+print(t_test_result)
+
+```

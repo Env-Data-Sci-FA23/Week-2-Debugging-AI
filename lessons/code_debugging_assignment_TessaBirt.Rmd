@@ -6,10 +6,8 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 ```
-
-Tessa Birt
 
 ## The Assignment:
 
@@ -21,9 +19,9 @@ There are a total of **5 fixes** you need to make to the workflow below. To comp
 
 **List here the 5 errors you had to fix in this workflow:**
 
-1.  Need to call in the tidyverse packages through library function.
+1.  Need to call in the tidyverse packages through library and palmer penguins function.
 
-2.  Need to call in the palmerpenguins package.
+2.  Change the initial code script to echo = FALSE to hide code.
 
 3.  Geom point is missing assigning colors to each species (color = species).
 
@@ -46,7 +44,7 @@ summary(penguins)
 
 Let's first explore body mass among all the penguin species with a histogram:
 
-```{r}
+```{r warning = FALSE}
 penguins %>% 
   ggplot()+
   geom_histogram(aes(x = body_mass_g))
@@ -54,7 +52,7 @@ penguins %>%
 
 Now we want to visualize the relationship between body mass and bill length *among species*:
 
-```{r}
+```{r warning = FALSE}
 penguins %>%
   ggplot() +
   geom_point(aes(x = body_mass_g, y = bill_length_mm, color = species))
@@ -67,7 +65,7 @@ adelie <- penguins %>%
   filter(species == 'Adelie')
 ```
 
-```{r}
+```{r warning = FALSE}
 adelie %>% 
   ggplot() +
   geom_boxplot(aes(x = island, y = body_mass_g))
