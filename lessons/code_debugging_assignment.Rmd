@@ -19,9 +19,9 @@ There are a total of **5 fixes** you need to make to the workflow below. To comp
 
 **List here the 5 errors you had to fix in this workflow:**
 
-1.  
+1.  Load R package "palmerpenguins" before calling the data "penguins" 
 
-2.  
+2.  Load tidyverse before creating a plot with ggplot 
 
 3.  
 
@@ -36,6 +36,7 @@ In this workflow, we want to explore the Palmer Penguins data set collected at t
 We read in the data and initially explore its structure:
 
 ```{r}
+library("palmerpenguins")
 data("penguins")
 summary(penguins)
 ```
@@ -43,6 +44,7 @@ summary(penguins)
 Let's first explore body mass among all the penguin species with a histogram:
 
 ```{r warning=FALSE}
+library(tidyverse)
 penguins %>% 
   ggplot()+
   geom_histogram(aes(x = body_mass_g))
@@ -53,7 +55,7 @@ Now we want to visualize the relationship between body mass and bill length *amo
 ```{r warning=FALSE}
 penguins %>%
   ggplot() +
-  geom_point(aes(x = body_mass_g, y = bill_length_mm))
+  geom_point(aes(x = body_mass_g, y = bill_length_mm, fill = species))
 ```
 
 Finally, let's create a new data frame called `adelie` that contains data for just the *Adelie* penguin species, and then visualize the differences in that species' body mass among islands.
