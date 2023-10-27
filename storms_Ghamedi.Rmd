@@ -1,0 +1,101 @@
+---
+title: "storms_Ghamedi"
+author: "OGhamedi"
+date: "2023-10-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+source("Setup.R")
+```
+
+# Answrering the question: "How have storms changed over time?"
+
+*download .csv of storms*
+
+```{r}
+storms_raw <- read_csv("data/storms.csv")
+```
+
+# Explore data
+
+```{r}
+glimpse(storms_raw)
+```
+
+# Organizes data in by Year and Catagory -- all storms in bar plot
+
+```{r}
+
+# Filter out rows with NA in the "category" column
+storms_filt <- storms_raw %>%
+  filter(!is.na(category))
+
+# Create a bar plot
+ggplot(storms_filt, aes(x = factor(year), fill = factor(category))) +
+  geom_bar() +
+  labs(x = "Year", y = "Count") +
+  ggtitle("Bar Plot of Category Count by Year (Excluding NA Values)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+# Visualizing storm status by year in bar plot
+
+```{r}
+
+# Create a bar plot of "status" by year
+ggplot(storms_raw, aes(x = factor(year), fill = factor(status))) +
+  geom_bar() +
+  labs(x = "Year", y = "Count") +
+  ggtitle("Bar Plot of Status by Year") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+# Re-visulaizing the year vs. status as a line plot
+
+```{r}
+
+# Create a line chart of "status" over time
+ggplot(storms_raw, aes(x = year, group = status, color = status)) +
+  geom_line(stat = "count") +
+  labs(x = "Year", y = "Count") +
+  ggtitle("Trend of Storm Status Over Time") +
+  scale_color_discrete(name = "Status") +
+  theme(legend.position = "top")
+
+```
+
+# Looking at mean wind values by year
+
+```{r}
+storm_wind <- storms_raw %>%
+      group_by(year) %>%
+      summarise(mean_wind = mean(wind, na.rm = TRUE))
+```
+
+# Visualise the relationship 
+
+```{r}
+storm_wind %>%
+  ggplot(aes(x = year, y = mean_wind)) + 
+  geom_line()
+```
+
+# Histogram of all hurricanes over time w/ density plot 
+```{r}
+# Filter out rows with NA in the "category" column
+hurr_filt <- storms_raw %>%
+  filter(status == "hurricane") %>%
+  group_by(year)
+
+ggplot(hurr_filt, aes(x=year)) + 
+ geom_histogram(aes(y=..density..), colour="black", fill="white")+
+ geom_density(alpha=.2, fill="#FF6666") 
+```
+
