@@ -1,0 +1,95 @@
+---
+title: "Storms_Data_Explore"
+author: "Ellie Ellis"
+date: "2023-10-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# read in data 
+data <- read.csv("data/storms.csv")
+```
+
+
+```{r}
+# load necessary packages
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+```{r}
+# check data 
+view(data)
+```
+
+```{r}
+# Summary stats for wind and pressure
+
+sumstats_wind <- data %>% group_by(year) %>% summarise(mean = mean (wind), 
+                                      max = max (wind),
+                                      min = min (wind), 
+                                      sd = sd (wind))
+
+sumstats_pressure <- data %>% group_by(year) %>% summarise(mean = mean (pressure), 
+                                      max = max (pressure),
+                                      min = min (pressure), 
+                                      sd = sd (pressure))
+
+sumstats_wind
+sumstats_pressure
+```
+
+```{r}
+# Create a scatter plot of wind speeds over time
+ggplot(data = data) + 
+  geom_point(mapping = aes(x = year, y = wind)) + 
+  xlab("Year") + ylab ("Wind speed (units?)") + ggtitle ("Wind speeds over time") 
+
+# Linear regression of wind speed over time 
+wind_model <- lm(wind ~ year, data = data)
+wind_model
+```
+```{r}
+#table of storm types and number of occurences 
+storm_counts <- table(data$status)
+storm_counts
+```
+
+
+```{r}
+# bar plots of storm counts in different year intervals 
+data_early <- data %>% filter(year < 1990)
+data_1996 <- data %>% filter (year > 1999, year < 2010 )
+data_2010 <- data %>% filter (year > 2010)
+
+storm_counts <- function(data) {
+  p <- ggplot(data, aes(y = status)) + 
+  geom_bar(stat = "count", fill = "blue")
+  
+  return(p)
+}
+
+storm_counts(data_early)
+storm_counts(data_1996)
+storm_counts(data_2010)
+```
+```{r}
+wind_100 <- data %>% filter(status == "hurricane") %>% filter(wind > 100)
+
+wind_100 %>% summarise(mean = mean(wind), 
+                       max = max(wind), 
+                       min = min(wind))
+
+# Hurricans and number of time points with winds above 100 mph 
+table(wind_100$name)
+
+# scatter plot of hurricanes with winds over 100 mph 
+ggplot(data = wind_100) + 
+  geom_point(mapping = aes(x = year, y = wind)) + 
+  xlab("Year") + ylab ("Wind speed (mph)") + ggtitle ("Hurricanes with winds over 100 mph over time") 
+```
+
