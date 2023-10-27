@@ -1,0 +1,87 @@
+---
+title: "Do Storms change over time?"
+author: "Ashlee Patacsil-Hardin"
+date: "2023-10-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(ggmap)
+library(httr)
+library(mapview)
+```
+
+1. As the first step of the in-class assignment, I loaded in the data.
+```{r}
+storms <- read_csv("~/RStudio/ESS523A/storms.csv")
+View(storms)
+```
+
+2. Next, I used the functions str() and head() to explore your dataset to understand its structure and contents.
+```{r}
+str(storms)
+```
+```{r}
+head(storms)
+```
+
+3. Next, I created a new data frame called "s_cleaned" and removed all the rowns from the data frame (storms) that contain at least one "NA" value. I was then able to focus on the storms that had a value in the category section of the data. 
+```{r}
+s_cleaned <- na.omit(storms)
+```
+
+4.Next, I compared years to the Hurrican Force Diameter. When looking at the data, it seems that there was a decrease in hurican Force Diamter over time.
+```{r}
+s_cleaned %>%
+ggplot(aes(x=year,y=hurricane_force_diameter)) +
+  geom_smooth()+
+  labs(title = "Years vs. Hurricane Force Diameter",x= "year",y="Hurricane Force Diameter")
+```
+
+4.5. I then compared years to the Tropical Storm Force Diameter. When looking at the data, it looks like the tropical storm force diameter is usually around 250.
+```{r}
+s_cleaned %>%
+ggplot(aes(x=year,y=tropicalstorm_force_diameter,col=name)) +
+  geom_smooth()+
+  labs(title = "Years vs. Tropical Storm Force Diameter",x= "year",y="Tropical Storm Force Diameter")
+```
+
+5. Next, I compared the years to the category number of the storms from the cleaned data.
+```{r}
+s_cleaned %>%
+ggplot(aes(x=year,y=category)) +
+  geom_smooth()+
+  labs(title = "Years vs. Cateogory",x= "year",y="Cateogory")
+```
+
+```{r}
+census_api_key("AIzaSyBPb3XOSJCHTmQCs7aIKMLqA5f6GDgiOg8", install = T)
+```
+
+```{r}
+readRenviron("~/.Renviron")
+```
+
+
+```{r}
+readRenviron("~/.Renviron")
+  location <- c(lon= 33.0,lat=-77.4)
+my_map <- get_map(location=location, zoom=12)
+```
+
+
+
+```{r}
+map <-ggplot() +
+  geom_sf(data=st_as_sf(storms,coords = c("long", "lat"))) +
+  labs(title="Storm Locations Over Time")
+
+mapview(map)
+```
+
