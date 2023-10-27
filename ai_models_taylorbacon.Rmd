@@ -35,7 +35,7 @@ adelie_penguins <- penguins[adelie_indices, ]
 
 This R code performs the following steps:
 
-1\. \*\*Loading Data:\*\*
+1\. \*\*Loading [[Data:\\\\\\\*\\\\](Data:\\\*\\){.uri}]([Data:\\\*\\](Data:\*\){.uri}){.uri}\*
 
 ```{r}
    library(palmerpenguins)
@@ -57,7 +57,7 @@ It loads the \`palmerpenguins\` package and imports the \`penguins\` dataset int
 
 It defines a function named \`step_one\`. However, this function doesn't have a return statement, so it doesn't modify or return any values.
 
-3\. \*\*Applying the Function and Filtering Data:\*\*
+3\. \*\*Applying the Function and Filtering [[Data:\\\\\\\*\\\\](Data:\\\*\\){.uri}]([Data:\\\*\\](Data:\*\){.uri}){.uri}\*
 
 ```{r}
 species_list <- unlist(lapply(penguins$species, step_one))

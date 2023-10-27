@@ -1,0 +1,87 @@
+---
+title: "Storms Data Exploration"
+author: "Taylor Bacon"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(viridis)
+```
+
+## Research Question: How have storms changed over time?
+
+```{r}
+#read in storms csv 
+storms <- read.csv("data/storms.csv")
+```
+
+## Exploring Hurricane Frequency & Intensity
+
+```{r}
+#filter to just hurricanes
+hurricanes <- storms %>%
+  filter(status == "hurricane")
+
+# simplified data frame with unique occurences of name, year and category
+hurricane_cat <- hurricanes %>%
+  select("name", "year", "category")%>%
+  distinct()
+```
+
+```{r}
+#Reorder the levels of the category variable and convert it to factor
+hurricane_cat$category <- factor(hurricane_cat$category, 
+                                 levels = c(5, 4, 3, 2, 1))
+
+#create a stacked bar chart with bars filled by hurricane category
+hurricane_cat %>%
+  ggplot(aes(x = factor(year), 
+             fill = category, 
+             group = interaction(year, category))) +
+  geom_bar(position = "stack") +
+  theme_minimal() +
+  scale_x_discrete(breaks = unique(as.character(hurricane_cat$year[hurricane_cat$year %% 5 == 0]))) +
+  scale_fill_viridis_d(option = "D")+
+  labs(title = "Frequency and Intensity of Hurricans over Time",
+       y = "Number of Hurricanes per Year",
+       x = "Year")
+```
+
+## Storm Frequency and Type by Month
+
+```{r}
+storms %>% 
+  group_by(month)%>% 
+  ggplot()+
+  geom_bar(aes(x=factor(month),
+               fill = status,
+               group = interaction(month,status)),
+           position = "stack")+
+  theme_minimal()+
+  labs(title = "Frequency of Storms by Month and Type",
+       x = "Month",
+       y = "Number of Storms",
+       fill = "Storm Type")
+```
+
+## Storm type by month, broken out by year from 2010 to 2021:
+
+```{r}
+storms %>% 
+  filter(year >= 2010)%>%
+  group_by(month)%>% 
+  ggplot()+
+  geom_bar(aes(x=factor(month),
+               fill = status,
+               group = interaction(month,status)),
+           position = "stack")+
+  theme_minimal()+
+  labs(title = "Frequency of Storms by Month and Type from 2010 to 2021",
+       x = "Month",
+       y = "Number of Storms",
+       fill = "Storm Type")+
+  facet_wrap(~year)
+```
