@@ -1,0 +1,173 @@
+---
+title: "storm_explorer"
+author: "Katie Willi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+How have storms changed over time?
+
+I have no idea! I'm going to start off by loading in the dataset, and creating a new column for the date:
+
+```{r}
+library(tidyverse)
+library(sf)
+
+storms <- read_csv('data/storms.csv') %>%
+  mutate(date = lubridate::ymd(paste0(year,"-",month,"-",day))) %>%
+  # in case a storm lasts thru the new year - group it with previous year
+  # no idea how often this actually happes though
+  mutate(storm_year = ifelse(month %in% c(1), year - 1, year))
+```
+
+Let's also visualize the storm tracks for fun:
+
+```{r}
+storms_sf <- storms %>%
+  st_as_sf(coords = c("long", "lat"), crs = 4269)
+
+mapview::mapview(storms_sf, zcol = "storm_year")
+```
+
+How many days do the hurricanes last? Is it changing?
+
+```{r}
+days <- storms %>%
+  filter(status == "hurricane") %>%
+  # only a single observation for every storm-date combo
+  distinct(name, storm_year, date) %>%
+  # names have been reused so must also group by year:
+  group_by(name, storm_year) %>%
+  # total days hurrican lasted
+  summarize(count = n())
+
+ggplot(days)+
+  geom_point(aes(x=storm_year, y=count, color = name)) +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+
+Get the max and min of some of our variables by year, and then plot them. This is something ChatGPT told me to do!
+
+```{r}
+storms_filtered <- storms %>%
+  filter(status == "hurricane") %>% 
+  select(name, storm_year, month, day, wind, pressure) %>%
+  # remove instances where year is na
+  filter(!is.na(storm_year))
+
+# Calculate annual summaries
+storms_summary <- storms_filtered %>%
+  group_by(storm_year) %>%
+  summarize(mean_wind = mean(wind, na.rm = TRUE),
+            max_wind = max(wind, na.rm = TRUE),
+            min_pressure = min(pressure, na.rm = TRUE),
+            max_pressure = max(pressure, na.rm = TRUE))
+# Create time series plots
+ggplot(storms_summary, aes(x = storm_year)) +
+  # Not a huge fan of developing plots this way. I prefer long data sets.
+  geom_line(aes(y = mean_wind, color = "Mean Wind Speed")) +
+  geom_line(aes(y = max_wind, color = "Max Wind Speed")) +
+  geom_line(aes(y = min_pressure, color = "Min Pressure")) +
+  geom_line(aes(y = max_pressure, color = "Max Pressure")) +
+  labs(title = "Hurricane Trends Over Time",
+       x = "Year",
+       y = "Values",
+       color = "Variables") +
+  scale_color_manual(values = c("Mean Wind Speed" = "pink", 
+                                "Max Wind Speed" = "red", 
+                                "Min Pressure" = "maroon", 
+                                "Max Pressure" = "darkred")) +
+  theme_bw()
+```
+
+Have certain types of storms become more frequent with time?
+
+```{r}
+storm_dist <- storms %>% 
+  # create a single observation for a given storm, its storm type (`status`), and day
+  distinct(name, status, storm_year, date) 
+
+# this plot shows the frequency (in days) of a given storm type by date
+ggplot(data = storm_dist) +
+  geom_histogram(aes(x = date), color = "darkred",fill = "maroon") +
+  facet_wrap(~status) +
+  theme_bw()
+```
+
+# Are storms increasing in the North Atlantic?
+
+```{r}
+upper <- storms %>%
+  #filter(status == "hurricane") %>% 
+  filter(lat >= 42) %>%
+  distinct(name, storm_year) %>%
+  mutate(combo = paste0(name,storm_year))
+
+
+upper_trails <- storms %>%
+  #filter(status == "hurricane") %>% 
+  mutate(combo = paste0(name,storm_year)) %>%
+  filter(combo %in% upper$combo) %>%
+  st_as_sf(coords = c("long","lat"), crs = 4269)
+  
+mapview(upper_trails, zcol = "name")
+
+ggplot(data = upper_trails) +
+  geom_histogram(aes(x = date), color = "darkred",fill = "maroon") +
+  facet_wrap(~status) +
+  theme_bw()
+```
+
+Are they moving further north?
+```{r}
+upper <- storms %>%
+  filter(status == "hurricane") %>% 
+  group_by(storm_year) %>%
+  summarize(max_lat = max(lat))
+
+ggplot(data = upper) +
+  geom_point(aes(x=storm_year, y= max_lat)) +
+  geom_smooth(aes(x=storm_year, y = max_lat), method = "lm") +
+  theme_bw()
+```
+
+# Are storms reaching inland more frequently?
+
+```{r}
+west <- storms %>%
+  #filter(status == "hurricane") %>% 
+  filter(long <=  -81) %>%
+  distinct(name, storm_year) %>%
+  mutate(combo = paste0(name,storm_year))
+
+west_trails <- storms %>%
+  #filter(status == "hurricane") %>% 
+  mutate(combo = paste0(name,storm_year)) %>%
+  filter(combo %in% west$combo) %>%
+  st_as_sf(coords = c("long","lat"), crs = 4269)
+  
+mapview(west_trails, zcol = "storm_year")
+
+ggplot(data = west_trails) +
+  geom_histogram(aes(x = date), color = "darkred",fill = "maroon") +
+  facet_wrap(~status) +
+  theme_bw()
+```
+
+Are they generally moving further west?
+```{r}
+west <- storms %>%
+  #filter(status == "hurricane") %>% 
+  group_by(storm_year) %>%
+  summarize(max_long = max(long))
+
+ggplot(data = west) +
+  geom_point(aes(x=storm_year, y= max_long)) +
+  geom_smooth(aes(x=storm_year, y = max_long), method = "lm") +
+  theme_bw()
+```
