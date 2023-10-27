@@ -1,0 +1,129 @@
+---
+title: "Storm data"
+author: "Melissa Morales"
+date: "2023-10-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+```{r}
+# Loading in the data
+Storms <- read.csv("/Users/melissamorales/Desktop/Week-2-Debugging-AI/Data/storms.csv")
+```
+
+Grouping data by year and finding the average storm pressure per year
+
+```{r}
+# Grouping data by year
+Storms %>%
+  group_by(year) %>% 
+  
+# Finding the average storm pressure per year 
+  summarise(mean_wind = mean(wind, na.rm = TRUE))
+```
+
+Visualizing the data
+
+```{r}
+# Summarize mean wind speed by year
+wind_means <- Storms %>%
+  group_by(year) %>% 
+  summarise(mean_wind = mean(wind, na.rm = TRUE))
+
+# Look at summarized data
+head(wind_means)
+
+# Bar chart of mean wind   
+ggplot(data = wind_means, aes(x = year, y = mean_wind)) +
+  geom_col() +
+  labs(title = "Mean Wind Speed per Year",  
+       x = "Year",
+       y = "Mean Wind Speed")
+```
+
+Visualizing the trend with a regression line, regression analysis, & ANOVA
+
+```{r}
+# Visualize trend with regression line
+ggplot(wind_means, aes(x = year, y = mean_wind)) +
+  geom_col() + 
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Mean Wind Speed per Year",
+       x = "Year",  
+       y = "Mean Wind Speed")
+
+# Regression analysis  
+fit <- lm(mean_wind ~ year, data = wind_means)
+summary(fit)
+
+# ANOVA
+anova(fit)
+```
+
+Conclusion:
+
+-   P-value of 0.3824 (regression analysis)
+
+-   F-value of 0.778 (ANOVA)
+
+-   No statistically significant relationship between year and mean wind speed in th storms data.
+
+
+```{r}
+library(dplyr)
+
+# Looking at storms & their status
+storm_counts <- storms %>%
+  group_by(year, status) %>%
+  summarize(count = n())
+
+```
+
+```{r}
+library(ggplot2)
+
+# Visualizing storm statuses
+ggplot(storm_counts, aes(x = year, y = count)) +
+  geom_col() +
+  facet_wrap(~status) +
+  labs(
+    title = "Storm Status Frequency by Year",
+    x = "Year",
+    y = "Frequency"
+  )
+```
+
+
+```{r}
+# Load the required libraries
+library(dplyr)
+library(lubridate)
+
+# Remove NA categories
+storms <- storms %>% 
+  filter(!is.na(category))
+
+# Analyze the data by grouping it by year and category
+summary_table <- storms %>%
+  group_by(year, category) %>%
+  summarize(count = n())
+
+# To view the summary table
+print(summary_table)
+
+```
+```{r}
+# Create a ggplot object
+ggplot(storms, aes(x = year, y = ..count.., color = category)) +
+  geom_point(stat = "count") +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(title = "Storm Categories by Year",
+       x = "Year",
+       y = "Count") +
+  theme_minimal() +
+  theme(legend.position = "right")
+```
+
