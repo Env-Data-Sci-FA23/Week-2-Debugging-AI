@@ -1,0 +1,318 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:**
+what does this code do? (placed code here) please provide an example of the output?
+**Chat bot response:**
+"This code is written in R, a language primarily used for statistics and data analysis. The code is doing the following:
+
+Loading the palmerpenguins package:
+The palmerpenguins package provides a dataset of penguins collected from the Palmer Archipelago, Antarctica. It is often used as an alternative to the famous iris dataset. The dataset contains various measurements of three species of penguins.
+
+Loading the penguins dataset:
+This dataset from the palmerpenguins package is loaded into the R environment.
+
+Defining the step_one function:
+This function takes an input x and converts it to a character type using as.character(x).
+
+Applying the step_one function to the species column of the penguins dataset:
+The lapply function is used to apply the step_one function to each element of the species column. The result is a list where each element corresponds to the species of a penguin, converted to character type. The unlist function is then used to flatten this list into a single vector, which is stored in the species_list variable.
+
+Finding the indices of Adelie penguins:
+The which function is used to find the indices in species_list where the species is "Adelie". These indices are stored in the adelie_indices variable.
+
+Extracting the rows corresponding to Adelie penguins:
+Using the indices stored in adelie_indices, the rows of the penguins dataset corresponding to Adelie penguins are extracted and stored in the adelie_penguins variable.
+
+The end result is that the adelie_penguins variable contains a subset of the penguins dataset, where all rows correspond to Adelie penguins.
+
+To provide an example of the output, let's display the first few rows of the adelie_penguins dataframe.
+
+Finished working
+Show work
+I apologize for the oversight. My current environment does not have internet access, so I'm unable to fetch the dataset directly from the web.
+
+However, I can describe the expected output based on the provided R code:
+
+The adelie_penguins dataframe would be a subset of the original penguins dataframe, containing only the rows where the species is "Adelie". The columns would remain the same as in the original dataframe.
+
+Here's a hypothetical example of the first few rows of the adelie_penguins dataframe:
+
+yaml
+Copy code
+  species      island   bill_length_mm bill_depth_mm flipper_length_mm body_mass_g    sex
+1  Adelie   Torgersen             39.1          18.7              181        3750   male
+2  Adelie   Torgersen             39.5          17.4              186        3800 female
+3  Adelie   Torgersen             40.3          18.0              195        3250 female
+...
+This is a simplification, but it should give you an idea of what to expect. If you have access to R and the palmerpenguins package, you can run the provided code to see the actual output for yourself.​"
+
+
+
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:**
+
+can you provide a simplified version of the above code and show the changes made?
+**Chat bot response:**
+"Certainly! Let's simplify the code and then discuss the changes:
+
+Original Code:
+
+{r}
+Copy code
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+}
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+Simplified Code:
+
+{r}
+Copy code
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+Changes Made:
+
+Removed the step_one function:
+The original code defined a function step_one that converts its input to a character. However, in the context of the penguins dataset, the species column is likely already a factor or a character type. Thus, the conversion might be unnecessary.
+
+Directly filtered the dataframe:
+Instead of first converting the species column to a character list and then finding indices where the species is "Adelie", the simplified code directly filters the dataframe based on the species column.
+
+The simplified code achieves the same result as the original but in a more concise manner. It directly filters the penguins dataframe to obtain rows where the species is "Adelie"."
+
+
+
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot:**
+for the simplified/revised version of code did you use tidyverse style? why did you choose to use/not use tidyverse style?
+**Chat bot response:**
+"The simplified code I provided does not use the tidyverse style. Instead, it uses base R operations to filter the dataframe.
+
+Reasons for not using tidyverse style in the provided simplification:
+
+Minimalism: The primary goal was to simplify the code. Introducing tidyverse (specifically dplyr) functions would require the user to load an additional library, which might not be necessary if they aren't already using other tidyverse functions in their project.
+
+Accessibility: While the tidyverse is popular and powerful, not all R users are familiar with it. Base R operations are more universally understood.
+
+Direct translation: The original code used base R operations, so the simplification retained that style for a more direct comparison.
+
+However, if you prefer the tidyverse style, the filtering operation can be achieved using dplyr as follows:
+
+r
+Copy code
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+This tidyverse-styled code uses the filter function from the dplyr package to obtain rows where the species is "Adelie". This approach is concise and readable, especially for those familiar with the tidyverse syntax."
+
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*:
+I included this in the last response
+**Chat bot response:**
+
+
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+code provided:
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+```
+
+it did run
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:**
+using the above information can you discover if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R)?
+**Chat bot response:**
+"Certainly! To determine if there's a significant difference in bill length across Adelie penguin sexes in the palmerpenguins dataset, we can use a t-test. The t-test is appropriate for comparing means between two groups, assuming the data meet the necessary assumptions (e.g., normality and equal variances).
+
+Here's the R code to perform the t-test:
+
+R
+Copy code
+library(palmerpenguins)
+
+# Load the data
+data("penguins")
+
+# Filter data for Adelie penguins
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+
+# Perform a t-test to compare bill length across sexes
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the result
+print(t_test_result)
+The output of the t.test function will provide the t-statistic, degrees of freedom, p-value, and confidence interval for the difference in means. If the p-value is below a significance level (commonly set at 0.05), we would reject the null hypothesis and conclude that there is a significant difference in bill length between the sexes.
+
+To give you the result, I'd need to run the t-test on the data. However, I can't run R code directly in this environment. You can execute the code in your local R environment to get the result."
+
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+code:
+```{r}
+library(palmerpenguins)
+
+# Load the data
+data("penguins")
+
+# Filter data for Adelie penguins
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+
+# Perform a t-test to compare bill length across sexes
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the result
+print(t_test_result)
+
+```
+yes it works.
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:**
+
+1.--can you evaluate the what you expect to get as a response for the test to evaluate the assumptions using the previous information?
+
+2.--can you make a hypothetical response to whether the Adelie penguins data met the assumptions of the statistical test?
+**Chat bot response:**
+1.--"Certainly! Before performing a t-test, it's important to check the assumptions associated with it. The primary assumptions for a t-test are:
+
+Normality: The data for each group should be approximately normally distributed.
+Equality of Variances: The variances of the two groups should be approximately equal.
+Independence: Observations within each group and between groups should be independent.
+Given the previous information, here's what we can do in R to evaluate these assumptions:
+
+1. Normality:
+We can use the Shapiro-Wilk test for normality. A significant p-value (typically < 0.05) indicates that the data deviates from a normal distribution.
+
+R
+Copy code
+# Test for normality for male Adelie penguins
+shapiro_test_male <- shapiro.test(adelie_penguins$bill_length_mm[adelie_penguins$sex == "male"])
+
+# Test for normality for female Adelie penguins
+shapiro_test_female <- shapiro.test(adelie_penguins$bill_length_mm[adelie_penguins$sex == "female"])
+
+print(shapiro_test_male)
+print(shapiro_test_female)
+2. Equality of Variances:
+We can use Levene's test or Bartlett's test for equality of variances. A significant p-value indicates that variances are not equal. Levene's test is more robust to deviations from normality, so it might be a better choice here.
+
+R
+Copy code
+library(car)
+
+# Test for equality of variances
+levene_test <- leveneTest(bill_length_mm ~ sex, data = adelie_penguins)
+
+print(levene_test)
+3. Independence:
+Independence is typically ensured by the study design. In the case of the palmerpenguins dataset, we assume that each row represents measurements from different penguins, ensuring independence. There's no statistical test for this in our context; it's more about understanding the data collection process.
+
+After evaluating the above tests, if the data does not meet the assumptions:
+
+For non-normal data, a non-parametric alternative to the t-test, like the Wilcoxon rank-sum test, can be considered.
+If variances are not equal, the t-test can be adjusted to account for unequal variances using the argument var.equal = FALSE.
+I can't run the actual R code here, but you can use the provided code snippets in your R environment to check the assumptions for the t-test. If the assumptions are met, you can proceed with the t-test as previously described. If not, you may need to consider alternative tests or transformations."
+
+
+2.--"Certainly! Let's walk through a hypothetical scenario for each of the assumptions:
+
+1. Normality:
+Hypothetical Response:
+
+R
+Copy code
+> print(shapiro_test_male)
+
+	Shapiro-Wilk normality test
+
+data:  adelie_penguins$bill_length_mm[adelie_penguins$sex == "male"]
+W = 0.983, p-value = 0.15
+
+> print(shapiro_test_female)
+
+	Shapiro-Wilk normality test
+
+data:  adelie_penguins$bill_length_mm[adelie_penguins$sex == "female"]
+W = 0.977, p-value = 0.09
+Interpretation:
+The p-values for both male and female Adelie penguins are greater than 0.05, which suggests that the bill length for both sexes does not significantly deviate from a normal distribution. Thus, the assumption of normality is met.
+
+2. Equality of Variances:
+Hypothetical Response:
+
+R
+Copy code
+> print(levene_test)
+
+	Levene's Test for Homogeneity of Variance
+
+data:  bill_length_mm by sex
+F = 3.52, p-value = 0.062
+Interpretation:
+The p-value from Levene's test is greater than 0.05, suggesting that the variances of bill length for male and female Adelie penguins are not significantly different. Thus, the assumption of equality of variances is met.
+
+3. Independence:
+Interpretation:
+Given that the data in the palmerpenguins dataset represents measurements from individual penguins, we can reasonably assume that the observations are independent of each other.
+
+Overall Conclusion:
+Based on our hypothetical results, the data for Adelie penguins' bill length appears to meet the assumptions for a t-test. Therefore, it would be appropriate to proceed with the t-test to determine if there's a significant difference in bill length between male and female Adelie penguins."
