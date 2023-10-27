@@ -1,0 +1,123 @@
+---
+title: "How have storms changed?"
+author: "Caitlin Mothes, PhD"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Set up
+```{r}
+library(tidyverse)
+library(sf) # spatial packages to make a map of storms
+library(mapview)
+
+```
+
+Read in data
+```{r}
+storms <- read_csv("data/storms.csv")
+```
+
+
+Initial exploration
+```{r}
+glimpse(storms)
+
+View(storms)
+```
+
+
+Make a map of storms
+```{r}
+storms_sf <- st_as_sf(storms, coords = c("long", "lat")) %>% 
+  st_set_crs(4296)
+
+mapview(storms_sf)
+```
+
+
+Lets look at wind and pressure over time
+
+Each storm has values every 6 hours, summarize and find the max wind speed and pressure for each storm
+
+But first, make sure there are not any duplicate storm names
+```{r}
+storms %>% 
+  distinct(name, year) %>% 
+  group_by(name) %>% 
+  count() %>% 
+  #filter if any count() is > 1, meaning duplicates
+  filter(n > 1)
+```
+
+Back up, lets just look at those that made it to hurricane status
+```{r}
+hurricanes <- storms %>% 
+  filter(status == "hurricane")
+```
+
+Check for duplicate named hurricanes again
+```{r}
+hurricanes %>% 
+  # get distinct name/year
+  distinct(name, year) %>% 
+  # see how many dup names
+  group_by(name) %>% 
+  count() %>% 
+  filter(n > 1) %>% 
+  #sort to see which names reoccur the most
+  arrange(-n)
+
+# Earl!!
+```
+
+Now back to the wind and pressure values, find the max for each hurricane/year 
+```{r}
+storm_stats <- hurricanes %>%
+  group_by(name, year) %>% 
+  summarize(max_wind = max(wind), max_pressure = max(pressure))
+
+# find storms with max recorded wind and pressure
+storm_stats %>% 
+  ungroup() %>% 
+  filter(max_wind == max(max_wind) | max_pressure == max(max_pressure))
+  
+```
+
+
+OK, back to change over time. 
+
+How many hurricanes per year?
+```{r}
+hurricanes %>% 
+  group_by(year) %>% 
+  count() %>% 
+  ggplot(aes(x = year, y = n)) +
+  geom_line()
+```
+
+Max hurricane wind speed/year?
+```{r}
+hurricanes %>% 
+  group_by(year) %>% 
+  summarize(max_wind = max(wind)) %>% 
+  ggplot(aes(x = year, y = max_wind)) +
+  geom_line()
+```
+
+Average wind speed/year? (Using all values)
+```{r}
+hurricanes %>% 
+  group_by(year) %>% 
+  summarize(avg_wind = mean(wind)) %>% 
+  ggplot(aes(x = year, y = avg_wind)) +
+  geom_line()
+
+#average is very different trend than looking at just the max!
+```
+
+
