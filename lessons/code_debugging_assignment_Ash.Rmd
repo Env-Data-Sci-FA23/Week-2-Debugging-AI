@@ -19,15 +19,17 @@ There are a total of **5 fixes** you need to make to the workflow below. To comp
 
 **List here the 5 errors you had to fix in this workflow:**
 
-1.  
+1.  The dataset is not loaded so we can do library(palmerpenguins) or load in the setup function that we have written before that eithe rloads the ackage or if the package isnot installed it installs and loads it.
 
-2.  
+2.  the library package (tidyverse or dplyr package) is not loaded
 
-3.  
+3.  The color according to the speis is missing. the scatter plot is black and white so we need to add (color = species  in gg plot function to make the species color pop)
 
-4.  
+4. Here Adelie is spelled wrong: penguins %>% 
+  filter(species == 'Adelei') 
 
-5.  
+5. In here, we never saved the filter specier to adelie variable to we have to save the filverspecies like (adelie <- penguins %>% 
+  filter(species == 'Adelie'))
 
 ## The workflow you need to fix begins here:
 
@@ -36,6 +38,8 @@ In this workflow, we want to explore the Palmer Penguins data set collected at t
 We read in the data and initially explore its structure:
 
 ```{r}
+library(palmerpenguins)
+library(tidyverse)
 data("penguins")
 summary(penguins)
 ```
@@ -53,14 +57,14 @@ Now we want to visualize the relationship between body mass and bill length *amo
 ```{r warning=FALSE}
 penguins %>%
   ggplot() +
-  geom_point(aes(x = body_mass_g, y = bill_length_mm))
+  geom_point(aes(x = body_mass_g, y = bill_length_mm, color = species))
 ```
 
 Finally, let's create a new data frame called `adelie` that contains data for just the *Adelie* penguin species, and then visualize the differences in that species' body mass among islands.
 
 ```{r}
-penguins %>% 
-  filter(species == 'Adelei')
+adelie <- penguins %>% 
+  filter(species == 'Adelie')
 ```
 
 ```{r warning=FALSE}
