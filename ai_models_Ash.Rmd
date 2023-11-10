@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 
 For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
 
-1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does: I am using ChatGPT
 
 ```{r}
 library(palmerpenguins)
