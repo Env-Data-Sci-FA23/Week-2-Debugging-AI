@@ -1,0 +1,274 @@
+---
+title: "ai_model_assignment"
+author: "Cody Wilkinson"
+date: "`r Sys.Date()`"
+output: github_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat
+bot** as well as **the chat bot's response** below each assignment
+question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk
+    of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:** What does this R code do?
+
+**Chat bot response:** The provided R code is intended to perform the
+following actions:
+
+Load the "palmerpenguins" library: This code begins by loading the
+"palmerpenguins" library, which provides a dataset of penguin
+measurements. The library is loaded using the library(palmerpenguins)
+command.
+
+Load the "penguins" dataset: The code then loads the "penguins" dataset
+from the "palmerpenguins" library using the data("penguins") command.
+This dataset contains various measurements and information about
+different penguin species.
+
+Define the step_one function: The step_one function is created. This
+function takes a single argument, x, and its purpose is to convert the
+input into character data type using as.character(x).
+
+Apply the step_one function to the "species" column: The lapply function
+is used to apply the step_one function to each element in the "species"
+column of the "penguins" dataset. This essentially converts the species
+names to character data type.
+
+Create a list of species: The unlist function is then used to unlist the
+result of the lapply operation, creating a single list containing the
+character species names for each penguin in the dataset.
+
+Find indices of "Adelie" penguins: The which function is employed to
+identify the indices in the list of species where the species name is
+"Adelie." These indices correspond to "Adelie" penguins in the dataset.
+
+Extract "Adelie" penguins: Finally, the code extracts the "Adelie"
+penguins from the original "penguins" dataset by using the identified
+indices. The resulting dataset, adelie_penguins, contains only the
+penguins of the "Adelie" species.
+
+In summary, this R code is designed to extract and create a new dataset
+containing penguins of the "Adelie" species from the "palmerpenguins"
+dataset, while ensuring that the "species" column is treated as
+character data. \*\*\*
+
+2.  Ask the AI model to simplify the code in question 1. **Question to
+    chat bot:** Simplify the following code in R. **Chat bot response:**
+
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins \<- penguins[penguins\$species == "Adelie", ]
+
+##In this simplified version, we directly subset the "penguins" dataset
+to extract rows where the "species" column is equal to "Adelie" without
+the need for a custom function or creating an intermediate list.
+
+3.  & 4. Is the AI model's response to Question 2 in the {tidyverse}
+    style (e.g., does the response use any {tidyverse} functions, the
+    `%>%` pipe, etc.)?
+
+ChatGPT's response was not it the tidyverse style.
+
+**Question to chat bot:**
+
+is this response: library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins \<- penguins[penguins\$species == "Adelie", ]
+in the tidyverse style?
+
+**Chat bot response:**
+
+The code you provided is not in the tidyverse style, but it's written in
+base R. The tidyverse is a collection of R packages, including dplyr,
+ggplot2, and others, that follow a consistent and unified style for data
+manipulation and visualization. Here's the equivalent code in the
+tidyverse style using the dplyr package:
+
+library(palmerpenguins)
+
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins \<- penguins %\>% filter(species == "Adelie")
+
+In the tidyverse style, the **`filter`** function from the dplyr package
+is used for filtering rows based on specified conditions, and the pipe
+operator **`%>%`** is used to chain operations together in a more
+readable and expressive manner.
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't,
+    ask the chat bot to fix it. Does it work now?
+
+```{r}
+library(palmerpenguins)
+
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>% filter(species == "Adelie")
+```
+
+```{r}
+View(adelie_penguins)
+```
+
+5.  The answer works.
+
+6.  Ask the chat bot if there is a significant difference in bill length
+    across Adelie penguin sexes in the {palmerpenguins} data set (using
+    R).
+
+**Question posed to chat bot:**
+
+in R, is there a significant difference in bill length across Adelie
+penguin sexes in the {palmerpenguins} data set
+
+**Chat bot response:**
+
+To determine if there is a significant difference in bill length across
+Adelie penguin sexes in the **`palmerpenguins`** dataset, you can
+perform a statistical test, such as a t-test, to compare the means of
+the bill lengths between male and female Adelie penguins. Here's how you
+can do it in R:
+
+library(palmerpenguins)
+
+data("penguins")
+
+\# Filter the data to include only Adelie penguins
+
+adelie_penguins \<- penguins[penguins\$species == "Adelie", ]
+
+\# Subset the data for males and females
+
+adelie_males \<- adelie_penguins[adelie_penguins\$sex == "Male", ]
+
+adelie_females \<- adelie_penguins[adelie_penguins\$sex == "Female", ]
+
+\# Perform a t-test to compare bill lengths between male and female
+Adelie penguins
+
+t_test_result \<- t.test(adelie_males\$bill_length_mm,
+adelie_females\$bill_length_mm)
+
+\# Print the results
+
+print(t_test_result)
+
+The **`t.test`** function is used to perform a two-sample t-test,
+comparing the bill lengths between male and female Adelie penguins. The
+result will provide a p-value, which you can use to determine whether
+there is a significant difference in bill length between the two groups.
+If the p-value is below a chosen significance level (e.g., 0.05), you
+can conclude that there is a significant difference.
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio
+    console to run it).* If not, what was wrong with it's answer?
+
+```{r}
+library(palmerpenguins)
+data("penguins")
+# Filter the data to include only Adelie penguins
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+# Subset the data for males and females
+adelie_males <- adelie_penguins[adelie_penguins$sex == "Male", ]
+adelie_females <- adelie_penguins[adelie_penguins$sex == "Female", ]
+# Perform a t-test to compare bill lengths between male and female Adelie penguins
+t_test_result <- t.test(adelie_males$bill_length_mm, adelie_females$bill_length_mm)
+# Print the results
+print(t_test_result)
+```
+
+Error in t.test.default(adelie_males\$bill_length_mm,
+adelie_females\$bill_length_mm) : 
+ not enough 'x' observations
+
+I got this error message.
+
+8.  Did the chat bot's response include an assessment of whether the
+    Adelie penguins data met the assumptions of the statistical test
+    used in the response? (e.g., test for normality or equal variances)?
+    If not, pose the question again to test for the assumptions and
+    paste the new question/response below.
+
+```{r}
+library(palmerpenguins)
+data("penguins")
+
+# Filter the data to include only Adelie penguins
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+
+# Check the levels of the "sex" factor variable
+print(levels(adelie_penguins$sex))
+
+# Perform a t-test to compare bill lengths between male and female Adelie penguins
+if ("Male" %in% levels(adelie_penguins$sex) && "Female" %in% levels(adelie_penguins$sex)) {
+  adelie_males <- adelie_penguins[adelie_penguins$sex == "Male", ]
+  adelie_females <- adelie_penguins[adelie_penguins$sex == "Female", ]
+
+  t_test_result <- t.test(as.numeric(adelie_males$bill_length_mm), as.numeric(adelie_females$bill_length_mm))
+  # Print the results
+  print(t_test_result)
+} else {
+  cat("Both male and female categories are not present in the data.\n")
+}
+```
+
+**Question to chat bot:**
+
+Many questions. i got error messages that could not be resolved in the
+chat bot.
+
+**Chat bot response:**
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie") %>%
+  group_by(sex) %>%
+  mutate(sex = as.character(sex))%>%
+  summarise(mean_bill_length = mean(bill_length_mm), n = n())
+
+t_test_result <- t.test(adelie_penguins$mean_bill_length ~ adelie_penguins$sex)
+
+# Print the results
+print(adelie_penguins)
+print(t_test_result)
+
+```
+
+I got a bunch of weird and fun responses to chatgpt trying to make this
+t-test.
