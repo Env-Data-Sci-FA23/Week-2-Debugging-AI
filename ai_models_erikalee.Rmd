@@ -1,0 +1,243 @@
+---
+title: "ai_model_assignment_erikalee"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+```{r}
+source("setup.R")
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:** What does the following code do?
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Chat bot response:**
+
+1.  It loads the "palmerpenguins" package, which contains the "penguins" dataset. This dataset includes information about penguin species, size measurements, and other attributes.
+
+2.  It loads the "penguins" dataset using the **`data("penguins")`** command, making the dataset available for analysis.
+
+3.  It defines a custom function called **`step_one`**. This function takes one argument **`x`** and converts it to a character vector using **`as.character(x)`**.
+
+4.  It applies the **`step_one`** function to the "species" column of the "penguins" dataset using the **`lapply`** function, which essentially converts all species names to character format. The result is stored in the variable **`species_list`**.
+
+5.  It finds the indices of the rows where the species is "Adelie" using the **`which`** function. The resulting indices are stored in the variable **`adelie_indices`**.
+
+6.  It creates a new data frame called **`adelie_penguins`** by subsetting the "penguins" dataset using the indices of Adelie penguins obtained in the previous step. This data frame contains only the rows corresponding to "Adelie" penguins.
+
+In summary, this code chunk converts the "species" column to a character format and then creates a new data frame that contains only the penguins with the species "Adelie."
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:** Simplify the above code chunk
+
+**Chat bot response:**
+
+Certainly, the code chunk can be simplified as follows:
+
+```{r}
+library(palmerpenguins)
+data("penguins")
+
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+```
+
+This simplified code accomplishes the same task: it loads the "palmerpenguins" package, loads the "penguins" dataset, and then creates a new data frame, **`adelie_penguins`**, containing only the rows where the species is "Adelie."
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+    No, it is only using base r style.
+
+**Question to chat bot:** What style of r is this code chunk using?
+
+**Chat bot response:**
+
+The code chunk you provided follows a mix of coding styles in R. Let's break it down:
+
+1.  **Function Naming**: Function names like "step_one" are typically written in snake_case, which is a common naming convention in R.
+
+2.  **Variable Naming**: Variable names such as "adelie_indices" and "adelie_penguins" use snake_case as well, which is a good practice in R.
+
+3.  **Package and Function Calls**: The package "palmerpenguins" is loaded using the **`library()`** function, and the dataset is loaded using the **`data()`** function, which is a standard way to load packages and data in R.
+
+4.  **Data Subsetting**: The code uses square brackets **`[]`** for data subsetting, which is a standard way to subset data frames in R.
+
+5.  **Equality Comparison**: The code uses **`==`** to check for equality in the species comparison, which is a standard practice in R.
+
+6.  **Indentation**: The code appears to have inconsistent indentation. Properly indenting code is a matter of style, but it's generally recommended for readability.
+
+It's worth noting that R is a flexible language, and coding style can vary depending on individual or team preferences. While the code adheres to some conventional R practices, consistent and well-defined coding style can improve readability and maintainability, especially in larger projects or when working collaboratively.
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*: Convert the code chunk into tidyverse style
+
+**Chat bot response:**
+
+To convert the code chunk into the tidyverse style, you can use the **`dplyr`** package for data manipulation. Here's the code in tidyverse style:
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+In this version of the code:
+
+1.  We load the "dplyr" package, which provides a set of functions for data manipulation in the tidyverse style.
+
+2.  We use the **`%>%`** operator (pipe operator) to create a pipeline of data manipulation operations. This makes the code more readable and easier to understand.
+
+3.  We use the **`filter()`** function from the dplyr package to filter the rows where the species is "Adelie," resulting in the same **`adelie_penguins`** data frame.
+
+This code follows the tidyverse style, which emphasizes a more intuitive and expressive way of working with data frames and data manipulation.
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+    The code chunk does work
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:** Is there a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set using the rstatix package?
+
+**Chat bot response:**
+
+To test for a significant difference in bill length across Adelie penguin sexes in the **`palmerpenguins`** dataset using the **`rstatix`** package, you can perform an independent samples t-test. Here's how you can do it:
+
+```{r}
+# Load the required packages
+library(palmerpenguins)
+library(dplyr)
+library(rstatix)
+
+# Filter the dataset for Adelie penguins
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+# Perform an independent samples t-test for bill length by sex
+t_test_result <- adelie_penguins %>%
+  group_by(sex) %>%
+  t_test(bill_length_mm)
+
+# Print the t-test results
+print(t_test_result)
+```
+
+In this code:
+
+1.  We load the **`palmerpenguins`** dataset and the necessary packages (**`dplyr`** and **`rstatix`**).
+
+2.  We filter the dataset to include only Adelie penguins.
+
+3.  We perform an independent samples t-test using **`t_test`** from the **`rstatix`** package, grouping the data by the "sex" variable and testing for differences in "bill_length_mm."
+
+4.  The **`print`** function is used to display the t-test results, which will include the t-statistic, degrees of freedom, and p-value.
+
+By examining the p-value in the test results, you can determine whether there is a significant difference in bill length between Adelie penguin sexes. If the p-value is less than the chosen significance level (e.g., 0.05), you can conclude that there is a significant difference.
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+    No, it does not work. The error was:
+
+    Error: object 'bill_length_mm' not found
+
+    It does work if I do not include the "rstatix package" part of the question.
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:** Is there a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set using rstatix package? Make sure to test for the assumptions.
+
+**Chat bot response:**
+
+To test for a significant difference in bill length across Adelie penguin sexes in the "palmerpenguins" dataset using the "rstatix" package, you can follow these steps and ensure you check the assumptions:
+
+1.  Load the required libraries and the "palmerpenguins" dataset.
+
+2.  Subset the data to include only Adelie penguins.
+
+3.  Perform an assumption test.
+
+4.  Conduct a t-test.
+
+5.  Summarize the results.
+
+Here's how you can do it:
+
+```{r}
+# Load required libraries
+library(palmerpenguins)
+library(rstatix)
+library(dplyr)
+
+# Load the data
+data("penguins")
+
+# Subset the data to include only Adelie penguins
+adelie_penguins <- penguins %>% 
+  filter(species == "Adelie")
+
+# Assumption test
+adelie_penguins %>%
+  shapiro_test(bill_length_mm)
+
+# Conduct a t-test
+result <- adelie_penguins %>%
+  t_test(bill_length_mm ~ sex)
+
+# Summarize the results
+result
+```
+
+In this code:
+
+1.  We load the "palmerpenguins" dataset and required libraries, including "rstatix" and "dplyr."
+
+2.  We subset the data to include only Adelie penguins using the **`filter()`** function.
+
+3.  We conduct a Shapiro-Wilk normality test (**`shapiro_test`**) on the "bill_length_mm" variable to test the assumption of normality.
+
+4.  We perform a t-test (**`t_test`**) comparing bill length by sex. This tests whether there is a significant difference in bill length between male and female Adelie penguins.
+
+5.  We summarize the results of the t-test using **`result`**.
+
+The **`shapiro_test`** checks for the assumption of normality, and the t-test will tell you whether there is a significant difference in bill length between the sexes. Be sure to inspect the p-value from the t-test to determine the significance of the difference. If the p-value is less than your chosen significance level (e.g., 0.05), you can conclude that there is a significant difference.
