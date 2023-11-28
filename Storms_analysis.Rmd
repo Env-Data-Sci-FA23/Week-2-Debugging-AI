@@ -1,0 +1,147 @@
+---
+title: "Hurricanes_10272023"
+author: "Billy McLean"
+date: "2023-10-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load Packages
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
+```
+
+Read in data
+
+```{r}
+data <- read_csv("C:/Users/Admin/Desktop/ESS523A/Week-2-Debugging-AI/data/storms.csv")
+```
+
+```{r}
+glimpse(data)
+```
+
+Have storms increased in frequency?
+
+```{r}
+data %>% ggplot()+
+  geom_histogram(mapping = aes(x = year), binwidth = .75)
+```
+
+Looks like it
+
+How about windspeeds? They look to correlate with latitude
+
+```{r}
+data %>% ggplot()+
+  geom_hex(mapping = aes(x = lat, y = wind))
+```
+
+It looks like most low and high windspeed evens occur 10 and 30 degrees latitude
+
+
+```{r}
+data %>% ggplot()+
+  geom_hex(mapping = aes(x = long, y = wind))
+```
+
+This shows us the data is from the western hemisphere, not super useful
+
+```{r}
+status_year <- data %>% group_by(status, year) %>% 
+  count()
+```
+
+
+How about Cat 5 storms specifically? Have we had more of those in recent years?
+Filter the dataset to just cat 5 storms
+
+
+```{r}
+catfive <- data %>% filter(category == "5")
+  
+```
+
+HISTOGRAM TIME
+
+```{r}
+catfive %>%  ggplot()+
+  geom_histogram(mapping = aes(x = year))
+```
+
+Looks like more cat 5 storms since 2000, yikes
+
+BUT
+Cat 5 is a rare and horrible thing, lets give some credence to cat 3 and 4 storms as well
+
+Do the same as above but for category 3, 4, and 5 storms
+
+```{r}
+highintensity <- data %>% filter(category == c(3, 4, 5))
+  
+```
+
+HISTOGRAM TIME
+
+```{r}
+highintensity %>%  ggplot()+
+  geom_histogram(mapping = aes(x = year))
+```
+
+SAME RESULT LETS ROCK AND ROLL
+
+But am I smart enough to do anything with this knowledge? Probably not
+
+Lets do the opposite and compare
+
+
+```{r}
+lowintensity <- data %>% filter(category == c(1, 2))
+  
+```
+
+HISTOGRAM TIME
+
+```{r}
+lowintensity %>%  ggplot()+
+  geom_histogram(mapping = aes(x = year))
+```
+
+At a glance it looks like there have been more low intensity storms as well. And a cat 2 still aint nothing to mess with really.
+
+Lets break these out by category and see if it looks like things are increasing
+```{r}
+data %>%  ggplot()+
+  geom_histogram(mapping = aes(x = year))+
+  facet_wrap(~category, scales = "free")
+  
+```
+Sure does, but storms can get upgraded as they progress, I could clean this data up to get better ideas but have run out of time. 
+
+
+Group by year and category
+```{r}
+cat_year <- data %>% group_by(category, year) %>% 
+  count()
+```
+
+filter out NA values
+```{r}
+
+filtered_catyear <- cat_year %>% na.omit()
+  
+```
+
+
+This didnt really go anywhere in the end. We'll get em next time
+
+
+
+
