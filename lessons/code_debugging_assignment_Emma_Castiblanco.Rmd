@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 ```
 
 ## The Assignment:
@@ -19,15 +19,15 @@ There are a total of **5 fixes** you need to make to the workflow below. To comp
 
 **List here the 5 errors you had to fix in this workflow:**
 
-1.  
+1.  Install and use library function for all necessary packages
 
-2.  
+2.  Needed to change echo= TRUE to echo =FALSE
 
-3.  
+3.  Need to add color for ggplot
 
-4.  
+4.  Name new df 'adelie'
 
-5.  
+5.  Adelie was misspelled
 
 ## The workflow you need to fix begins here:
 
@@ -36,7 +36,6 @@ In this workflow, we want to explore the Palmer Penguins data set collected at t
 We read in the data and initially explore its structure:
 
 ```{r}
-  install.packages("palmerpenguins") 
   library(palmerpenguins)
 data("penguins") 
 summary(penguins)
@@ -45,24 +44,23 @@ summary(penguins)
 Let's first explore body mass among all the penguin species with a histogram:
 
 ```{r warning=FALSE}
-penguins %>% 
-  ggplot()+
+  library("ggplot2")
+  ggplot(penguins)+
   geom_histogram(aes(x = body_mass_g))
 ```
 
 Now we want to visualize the relationship between body mass and bill length *among species*:
 
 ```{r warning=FALSE}
-penguins %>%
-  ggplot() +
-  geom_point(aes(x = body_mass_g, y = bill_length_mm))
+ggplot(data=penguins, aes(x = body_mass_g, y = bill_length_mm)) +
+  geom_point(aes(color=species))
 ```
 
 Finally, let's create a new data frame called `adelie` that contains data for just the *Adelie* penguin species, and then visualize the differences in that species' body mass among islands.
 
 ```{r}
-penguins %>% 
-  filter(species == 'Adelei')
+library("tidyverse")
+adelie <- filter(penguins, species == "Adelie")
 ```
 
 ```{r warning=FALSE}
