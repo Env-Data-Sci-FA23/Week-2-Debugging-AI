@@ -1,6 +1,6 @@
 ---
 title: "ai_model_assignment"
-author: "Katie Willi and Caitlin Mothes"
+author: "Billy McLean"
 date: "`r Sys.Date()`"
 output: github_document
 ---
@@ -28,39 +28,212 @@ adelie_penguins <- penguins[adelie_indices, ]
 ```
 
 **Question posed to chat bot:**
-
+Tell me what the following chunk of code will do in R
 **Chat bot response:**
+
+The provided R code performs the following tasks:
+
+It loads the "palmerpenguins" package, which contains the dataset "penguins."
+
+It loads the "penguins" dataset using the data("penguins") function, making the penguins dataset available for use in the code.
+
+It defines a custom function named step_one, which takes an input x and converts it to a character data type using as.character(x). However, it doesn't return the result, so the conversion is not saved or used in any further operations.
+
+It creates a new variable named species_list by applying the step_one function to each element of the "species" column in the "penguins" dataset using the lapply function and then converting the result to a vector using unlist. This variable is a character vector containing the species names.
+
+It identifies the indices where the "species_list" is equal to "Adelie" using the which function, and it stores these indices in the variable adelie_indices. This step essentially finds the rows in the dataset where the penguin species is "Adelie."
+
+It creates a new dataframe named adelie_penguins by subsetting the "penguins" dataset using the indices stored in adelie_indices. This dataframe contains only the rows corresponding to Adelie penguins.
+
+In summary, this code extracts the rows of the "penguins" dataset where the penguin species is "Adelie" and stores them in a new dataframe named adelie_penguins. However, it's important to note that the code does not return or display the adelie_penguins dataframe, so you would need to print it or use it further in your analysis if necessary.
+
+
 
 2)  Ask the AI model to simplify the code in question 1.
 
 **Question to chat bot:**
 
+Simplify this code in R:
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+ChatGPT
+You can simplify the provided R code by directly subsetting the "penguins" dataset without creating the intermediate "species_list" variable and the custom function. Here's a simplified version of the code:
+
+{r}
+Copy code
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+In this simplified code:
+
+We still load the "palmerpenguins" package and load the "penguins" dataset.
+
+We create the adelie_penguins dataframe by directly subsetting the "penguins" dataset to include only the rows where the "species" column is equal to "Adelie." This simplifies the code and eliminates the need for the custom function and the intermediate "species_list" variable.
+
+
 **Chat bot response:**
+
+
+You can simplify the provided R code by directly subsetting the "penguins" dataset without creating the intermediate "species_list" variable and the custom function. Here's a simplified version of the code:
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+
+```
+
+In this simplified code:
+
+We still load the "palmerpenguins" package and load the "penguins" dataset.
+
+We create the adelie_penguins dataframe by directly subsetting the "penguins" dataset to include only the rows where the "species" column is equal to "Adelie." This simplifies the code and eliminates the need for the custom function and the intermediate "species_list" variable.
+
+
+
+
 
 3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
 
 **Question to chat bot:**
+Does the simplified code above use any functions from the tidyverse data package?
+
 
 **Chat bot response:**
+The simplified code provided does not use any functions from the tidyverse data package. It only uses functions from the base R and the "palmerpenguins" package, which is not part of the tidyverse. The code primarily relies on basic subsetting and comparison operations to filter the data, which are standard features in base R.
+
+
+
 
 4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
 
 **Question to chat bot** (*if your previous question was not in tidyverse)*:
+Please rewrite the simplified code using the tidyverse data package
+
+
 
 **Chat bot response:**
+Certainly, here's the simplified code using functions from the tidyverse data package (specifically, dplyr):
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+```
+In this version of the code, we load both the "palmerpenguins" package and the "dplyr" package. We then use the %>% operator (pipe) to chain operations together. The filter function from the "dplyr" package is used to filter the "penguins" dataset, keeping only the rows where the "species" column is equal to "Adelie." This is a more concise and readable way to achieve the same result using tidyverse functions.
+
 
 5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+It works
 
 6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
 
 **Question posed to chat bot:**
+Is there a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R)
+
 
 **Chat bot response:**
+To determine if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} dataset using R, you can perform a statistical test. You can use a t-test or an analysis of variance (ANOVA) to compare the means of bill lengths between the different sexes. Here's an example of how to perform a t-test:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+# Subset the data to include only Adelie penguins
+adelie_penguins <- penguins[penguins$species == "Adelie",]
+
+# Perform a t-test to compare bill lengths between sexes
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the test result
+print(t_test_result)
+
+```
+In this code, we first subset the data to include only Adelie penguins. Then, we use the t.test function to compare the bill lengths between the different sexes (male and female). The result will indicate whether there is a significant difference in bill length between the sexes. If the p-value in the test result is less than the significance level (e.g., 0.05), you can conclude that there is a significant difference.
+
+Alternatively, you can perform an ANOVA to test for differences between multiple groups (more than two) if you want to compare bill lengths across sexes and other categories simultaneously. Here's an example of how to perform an ANOVA:
+
+```{r}
+# Perform an ANOVA to compare bill lengths across sexes
+anova_result <- aov(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Summarize the ANOVA result
+summary(anova_result)
+
+```
+
+
+The ANOVA will provide information about whether there are significant differences between the sexes. If the ANOVA is significant, you can follow it up with post-hoc tests to determine which specific pairs of groups (sexes) are different from each other.
+
+
 
 7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+The t-test answer works and shows a significant difference, with a p-value of 4.801e-15
+The ANOVA Test code worked as well, and produced a Pr(>F) value of 4.44e-15
 
 8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
 
 **Question to chat bot:**
 
 **Chat bot response:**
+To test the assumptions of a t-test (in this case, the assumption of approximately normal distribution and homogeneity of variances) and perform the analysis using the tidyverse package, you can use the broom and ggplot2 packages for visualizations and to check assumptions. Here's how you can do it:
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+library(broom)
+library(ggplot2)
+
+data("penguins")
+
+# Subset the data to include only Adelie penguins
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+# Perform a t-test to compare bill lengths between sexes
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Check assumptions
+t_test_assumptions <- t_test_result %>%
+  tidy()
+
+# Visualize the distribution of bill lengths by sex
+ggplot(adelie_penguins, aes(x = bill_length_mm, color = sex)) +
+  geom_density() +
+  labs(title = "Distribution of Bill Length by Sex")
+
+# Print the test result and assumptions
+print(t_test_result)
+print(t_test_assumptions)
+
+```
+
+In this code:
+
+We perform the t-test as before and store the result in t_test_result.
+
+We use the broom package to convert the test result into a tidy format using tidy(). This provides information about the assumptions and the test itself.
+
+We use ggplot2 to create a density plot to visualize the distribution of bill lengths by sex.
+
+This code will give you the t-test result, assumptions, and a visual representation of the data. You can check the normality assumption by inspecting the density plots and assess the homogeneity of variances as part of the t-test assumptions. If you find any violations, you may need to consider alternative statistical tests or transformations.
