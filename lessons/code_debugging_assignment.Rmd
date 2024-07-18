@@ -8,8 +8,9 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ```
+## Assignment Details:
 
-## The Assignment:
+## The Assignment: This assignment is worth 10 points. 5 points for finding the errors, 5 points for successful submission as a PR.
 
 *Tip: View this in the visual editor in RStudio*
 
