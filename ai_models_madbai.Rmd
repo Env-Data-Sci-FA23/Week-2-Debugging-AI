@@ -1,0 +1,341 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:**
+
+What does the following code chunk do?
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Chat bot response:**
+
+The given code chunk performs the following operations:
+
+1\. The \`step_one\` function takes an input \`x\`, converts it to a character type, and returns it. However, this function does not have any effect on the given dataset.
+
+2\. The \`species_list\` variable is created by applying the \`step_one\` function to the \`species\` column of the \`penguins\` dataset using the \`lapply\` function. The \`unlist\` function is then used to convert the resulting list into a vector.
+
+3\. The \`which\` function is used to find the indices of the elements in \`species_list\` that are equal to "Adelie". These indices are stored in the \`adelie_indices\` variable.
+
+4\. Finally, the \`adelie_penguins\` variable is created by subsetting the \`penguins\` dataset using the indices in \`adelie_indices\`.
+
+In summary, the given code chunk creates a new dataset called \`adelie_penguins\` that contains only the rows of the original \`penguins\` dataset where the species is "Adelie".
+
+Citations:
+
+[1] <https://www.topgrad.io/a-data-analyst-is-working-with-the-penguins-dataset-in-r-what-code-chunk-will-allow-them-to-sort-the-penguins-data-by-the-variable-bill_length_mm/>
+
+[2] <https://www.topgrad.io/you-are-working-with-the-penguins-dataset-you-want-to-use-the-summarize-and-min-functions-to-find-the-minimum-value-for-the-variable-bill_depth_mm-you-write-the-following-codepenguins-drop_/>
+
+[3] <https://github.com/m3redithw/Google-Data-Analytics/blob/main/course-7-Data-Analysis-with-R-Programming/week_3_practice_quiz>
+
+[4] <https://rpubs.com/probablyvivek/penguins>
+
+[5] <https://cran.r-project.org/web/packages/innsight/vignettes/Example_2_penguin.html>
+
+[6] <https://shinyapps.bren.ucsb.edu/envs40workshop/>
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:**
+
+Please simplify the code above.
+
+**Chat bot response:**
+
+The given code chunk performs the following operations:
+
+1\. The \`step_one\` function converts an input to a character type, but it does not have any effect on the given dataset.
+
+2\. The \`species_list\` variable is created by applying the \`step_one\` function to the \`species\` column of the \`penguins\` dataset using the \`lapply\` function. The \`unlist\` function is then used to convert the resulting list into a vector.
+
+3\. The \`which\` function is used to find the indices of the elements in \`species_list\` that are equal to "Adelie". These indices are stored in the \`adelie_indices\` variable.
+
+4\. Finally, the \`adelie_penguins\` variable is created by subsetting the \`penguins\` dataset using the indices in \`adelie_indices\`.
+
+To simplify the code, we can remove the \`step_one\` function and combine the \`lapply\` and \`unlist\` functions into a single call to \`sapply\`. This results in the following code:
+
+```{r}
+species_list <- sapply(penguins$species, as.character)
+
+adelie_penguins <- penguins[which(species_list == "Adelie"), ]
+```
+
+This code achieves the same result as the original code but is more concise and easier to read.
+
+Citations:
+
+[1] <https://stackoverflow.com/questions/44111334/can-i-further-simplify-this-code-expression>
+
+[2] <https://www.codeproject.com/Questions/1099137/Could-someone-help-me-simplify-some-lines>
+
+[3] <https://forum.arduino.cc/t/what-is-the-best-way-to-simplify-this-code/481477>
+
+[4] <https://news.ycombinator.com/item?id=18772873>
+
+[5] <https://www.sololearn.com/Discuss/143679/please-simplify-array-for-me>
+
+[6] <https://www.topgrad.io/you-are-working-with-the-penguins-dataset-you-want-to-use-the-summarize-and-min-functions-to-find-the-minimum-value-for-the-variable-bill_depth_mm-you-write-the-following-codepenguins-drop_/>
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot:**
+
+Does the response use any {tidyverse} functions?
+
+**Chat bot response:**
+
+Yes, the response uses a {tidyverse} function. The original code chunk uses the `which` function, which is a base R function. However, the simplified code chunk uses the `sapply` function, which is a {tidyverse} function. The `sapply` function is part of the {base} package, which is loaded by default in R, but it is also included in the {tidyverse} package.
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverse} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*:
+
+Please convert the code into {tidyverse} style.
+
+**Chat bot response:**
+
+Here's the given code chunk converted into {tidyverse} style:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+species_list <- penguins %>% 
+
+  pull(species) %>% 
+
+  as.character()
+
+adelie_penguins <- penguins %>% 
+
+  filter(species == "Adelie")
+
+```
+
+In this code, we use the {tidyverse} package \`dplyr\` to manipulate the \`penguins\` dataset. We use the \`%\>%\` operator to pipe the output of one function into the input of the next function.
+
+First, we use the \`pull\` function to extract the \`species\` column from the \`penguins\` dataset. We then convert this column to a character type using the \`as.character\` function. This creates the \`species_list\` variable.
+
+Next, we use the \`filter\` function to subset the \`penguins\` dataset to only include rows where the \`species\` column is equal to "Adelie". This creates the \`adelie_penguins\` variable.
+
+This code achieves the same result as the original code but is written in a more concise and readable {tidyverse} style.
+
+Citations:
+
+[1] <https://tidyverse.tidyverse.org/CONTRIBUTING.html>
+
+[2] <https://style.tidyverse.org/syntax.html>
+
+[3] <https://stackoverflow.com/questions/50660401/use-instead-of-for-assignment-when-styling-r-code-with-styler>
+
+[4] <https://github.com/tidymodels/infer/issues/159>
+
+[5] <https://intro2r.library.duke.edu/functions>
+
+[6] <https://community.rstudio.com/t/teaching-dplyr-functions-which-have-base-r-equivalents/3775>
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+    Yes, the code that ChatGPT put together does work.
+
+    ```{r}
+    library(palmerpenguins)
+
+    data("penguins")
+
+    species_list <- penguins %>% 
+
+      pull(species) %>% 
+
+      as.character()
+
+    adelie_penguins <- penguins %>% 
+
+      filter(species == "Adelie")
+    ```
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:**
+
+Is there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R)?
+
+**Chat bot response:**
+
+Yes, there is information available in the search results that can help us answer the question using {tidyverse} functions. We can use the {dplyr} package to group the \`adelie_penguins\` dataset by sex and calculate the mean bill length for each sex. We can then use the \`summarize\` function to create a new dataset that contains the mean bill length for male and female Adelie penguins. Here's the code:
+
+```{r}
+library(palmerpenguins)
+
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>% 
+
+  filter(species == "Adelie")
+
+adelie_penguins_summary <- adelie_penguins %>% 
+
+  group_by(sex) %>% 
+
+  summarize(mean_bill_length = mean(bill_length_mm, na.rm = TRUE))
+
+adelie_penguins_summary
+```
+
+This code creates a new dataset called \`adelie_penguins_summary\` that contains the mean bill length for male and female Adelie penguins. We use the \`group_by\` function to group the \`adelie_penguins\` dataset by sex, and then use the \`summarize\` function to calculate the mean bill length for each sex. The \`na.rm = TRUE\` argument is used to remove any missing values from the calculation. Finally, we print the \`adelie_penguins_summary\` dataset to the console.
+
+This code uses the {dplyr} package, which is part of the {tidyverse} suite of packages.
+
+Citations:
+
+[1] <https://rpubs.com/CJTA/948742>
+
+[2] <https://allisonhorst.github.io/palmerpenguins/>
+
+[3] <https://allisonhorst.github.io/palmerpenguins/articles/examples.html>
+
+[4] <https://bookdown.org/rehk/stm1001_dsm_t1_data_visualisation_in_r/penguins.html>
+
+[5] <https://rpubs.com/OrliKhaim/w3fp>
+
+[6] <https://journal.r-project.org/articles/RJ-2022-020/>
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+    Yes, the code produced does work.
+
+    ```{r}
+    library(palmerpenguins)
+
+    library(dplyr)
+
+    data("penguins")
+
+    adelie_penguins <- penguins %>% 
+
+      filter(species == "Adelie")
+
+    adelie_penguins_summary <- adelie_penguins %>% 
+
+      group_by(sex) %>% 
+
+      summarize(mean_bill_length = mean(bill_length_mm, na.rm = TRUE))
+
+    adelie_penguins_summary
+    ```
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:**
+
+Is there is a significant difference in bill length across Adelie
+penguin sexes in the {palmerpenguins} data set (using R)? Please test
+assumptions.
+
+**Chat bot response:**
+
+Based on the available search results, we can perform tests for normality and equal variances to assess whether the Adelie penguins data meets the assumptions of a t-test for comparing the mean bill length of male and female Adelie penguins.
+
+One search result[1] provides a Q-Q plot for the male bill length data, which suggests that the data are normally distributed. However, we should also check the normality of the female bill length data.
+
+We can use the Shapiro-Wilk test to formally test for normality. Here's the code to test the normality of the male and female bill length data:
+
+```{r}
+library(palmerpenguins)
+
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>% 
+
+  filter(species == "Adelie")
+
+male_bill_length <- adelie_penguins %>% 
+
+  filter(sex == "male") %>% 
+
+  pull(bill_length_mm)
+
+female_bill_length <- adelie_penguins %>% 
+
+  filter(sex == "female") %>% 
+
+  pull(bill_length_mm)
+
+shapiro.test(male_bill_length)
+
+shapiro.test(female_bill_length)
+
+```
+
+The \`shapiro.test\` function tests the null hypothesis that the data are normally distributed. If the p-value is less than 0.05, we reject the null hypothesis and conclude that the data are not normally distributed.
+
+If the data are normally distributed, we can check the assumption of equal variances using the F-test or Levene's test. Here's the code to test the equality of variances of the male and female bill length data using Levene's test:
+
+```{r}
+
+library(car)
+
+leveneTest(male_bill_length, female_bill_length)
+```
+
+The \`leveneTest\` function tests the null hypothesis that the variances of the two groups are equal. If the p-value is less than 0.05, we reject the null hypothesis and conclude that the variances are not equal.
+
+If the data do not meet the assumptions of normality or equal variances, we may need to use a non-parametric test, such as the Wilcoxon rank-sum test, to compare the mean bill length of male and female Adelie penguins.
+
+Citations:
+
+[1] <https://rpubs.com/CJTA/948742>
+
+[2] <https://shiny.colgate.edu/apps/Collaboratory-Apps/T-Test/>
+
+[3] <https://journal.r-project.org/articles/RJ-2022-020/>
+
+[4] <https://rpubs.com/OrliKhaim/w3fp>
+
+[5] <https://bookdown.org/rehk/stm1001_dsm_t1_data_visualisation_in_r/penguins.html>
+
+[6] <https://cran.r-project.org/web/packages/palmerpenguins/readme/README.html>

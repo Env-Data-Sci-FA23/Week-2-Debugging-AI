@@ -1,0 +1,75 @@
+---
+title: "Storms-Exploration"
+author: "Madison Bai"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **How do storms change over time?**
+
+**Hypothesis:** Storms have gotten stronger over time.
+
+Loaded in data set
+
+```{r}
+library(tidyverse)
+library(tidyr)
+library(ggplot2)
+storm_data <- read_csv("data/storms.csv")
+```
+
+Cleaned the data for desired variables
+
+```{r}
+storm_clean <- storm_data %>%
+  select(name, year, category, tropicalstorm_force_diameter, hurricane_force_diameter) %>%
+  drop_na()
+```
+
+Summarized and average desired variables by year to view changes over time
+
+```{r}
+storm_averages <- storm_clean %>%
+  group_by(year) %>%
+  summarise(avg_category=mean(category), avg_tropicalstorm_force_diameter = mean(tropicalstorm_force_diameter), avg_hurricane_force_diameter=mean(hurricane_force_diameter))
+```
+
+Visualizing how storms change over time by category
+
+```{r}
+storm_averages %>%
+ ggplot(aes(x = year, y = avg_category)) + 
+  geom_line()
+```
+
+```{r}
+storm_averages %>%
+ ggplot(aes(x = year, y = avg_tropicalstorm_force_diameter)) + 
+  geom_line()
+```
+
+```{r}
+storm_averages %>%
+ ggplot(aes(x = year, y = avg_hurricane_force_diameter)) + 
+  geom_line()
+```
+
+
+**Results:** There is no discernible trend that storms have gotten stronger over time on average.
+
+Let's explore how the average number of category has changed over time. 
+
+```{r}
+cats <- storm_clean %>%
+  distinct(name, year, category) %>%
+  group_by(year, category) %>%
+  count(category)
+```
+
+Didn't finish T_T
+
+Results: I don't know how to code 
