@@ -1,0 +1,115 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:** What does this code do?
+
+**Chat bot response:**
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:** simplify this code
+
+**Chat bot response:**
+
+library(palmerpenguins)
+
+adelie_penguins \<- subset(penguins, species == "Adelie")
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+    No, it used r-base functions.
+
+**Question to chat bot:** simplify this code
+
+**Chat bot response:**
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*:
+
+Simplify the code using tidyverse functions
+
+**Chat bot response:**
+
+library(palmerpenguins)
+library(dplyr)
+
+adelie_penguins \<- penguins %\>%
+filter(species == "Adelie")
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+    Yes it worked
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:** Using base-r functions is there a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set?
+
+**Follow-up question:** Is there a significant difference?
+
+**Chat bot response:**
+
+library(palmerpenguins)
+
+**Follow-up response:**
+
+Based on the available search results, we can say that a significant difference is a statistical term that indicates whether two groups are substantially different from each other. However, a significant difference does not always mean that there is a significant or practical difference between the groups in question. In other words, a significant difference may not be important or relevant to the patient or the research question. Therefore, it is important to consider the context and the practical implications of the results when interpreting statistical significance
+
+[**1**](https://www.statisticsdonewrong.com/significant-differences.html)
+
+[**5**](https://en.testingtreatments.org/book/7-taking-account-play-chance/what-does-a-significant-difference-between-treatments-mean/)
+
+[**6**](https://help.surveymonkey.com/en/surveymonkey/analyze/significant-differences/)
+
+.Regarding the specific question of whether there is a significant difference in bill length across Adelie penguin sexes in the **`palmerpenguins`** dataset using base R functions, we can use the **`t.test`** function to perform a two-sample t-test and determine if the difference in bill length between male and female Adelie penguins is statistically significant. However, as mentioned earlier, we need to interpret the results in the context of the research question and consider the practical implications of the findings
+
+[**2**](https://www.researchgate.net/post/Are_there_significant_differences_in_the_different_levels_of_significance)
+
+[**4**](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7977423/)
+
+.
+adelie_penguins \<- subset(penguins, species == "Adelie")
+
+t.test(adelie_penguins\$bill_length_mm \~ adelie_penguins\$sex)
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+    Yes
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+    It did:
+
+    ```         
+    Welch Two Sample t-test  data:  adelie_penguins$bill_length_mm by adelie_penguins$sex t = -8.7765, df = 142.12, p-value = 4.801e-15 alternative hypothesis: true difference in means between group female and group male is not equal to 0 95 percent confidence interval:  -3.838514 -2.427240 sample estimates: mean in group female   mean in group male              37.25753             40.39041 
+    ```
+
+**Question to chat bot:**
+
+**Chat bot response:**
