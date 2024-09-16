@@ -1,0 +1,226 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:**
+
+what does this code do?
+
+**Chat bot response:**
+
+This R code does the following:
+
+It loads the "palmerpenguins" library, which contains a dataset of penguin measurements.
+
+It loads the "penguins" dataset from the "palmerpenguins" package.
+
+It defines a function named step_one, which takes a single argument x. Inside the function, it converts the input x into a character (text) type using the as.character function, but it doesn't return the modified value. This function essentially converts any input to a character type and is not currently used in the code.
+
+It creates a new variable named species_list by applying the step_one function to each element in the "species" column of the "penguins" dataset using lapply. The result is a character vector containing the species names.
+
+It finds the indices (row numbers) in the species_list where the species is "Adelie" and stores these indices in the adelie_indices variable.
+
+Finally, it creates a new dataset named adelie_penguins by subsetting the original "penguins" dataset using the row indices found in step 5. This new dataset contains only the penguins of the "Adelie" species.
+
+In summary, this code filters the "penguins" dataset to create a new dataset, adelie_penguins, that includes only the penguins of the "Adelie" species. The step_one function is defined but is not used to modify the data in this code.
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:**
+
+simplify the code
+
+**Chat bot response:**
+
+You can simplify the code as follows:
+
+{r}
+library(palmerpenguins)
+data("penguins")
+
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+
+In this simplified code:
+
+We load the "palmerpenguins" library and load the "penguins" dataset as before.
+
+We directly subset the "penguins" dataset to create adelie_penguins, which contains only the rows where the species is "Adelie" using a condition in square brackets. This eliminates the need for the step_one function and the creation of the species_list variable.
+
+This code accomplishes the same task in a more straightforward and concise way by directly filtering the data based on the species condition.
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot:**
+
+does this simplified code use the tidyverse package?
+
+**Chat bot response:**
+
+No, the simplified code I provided does not use the tidyverse package. It uses base R for data manipulation. The code uses basic subsetting and conditional filtering operations to create the adelie_penguins dataset, which is part of the base R functionality and doesn't rely on the tidyverse package for data manipulation.
+
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*:
+
+please convert the simplfied code into the tidyverse style
+
+**Chat bot response:**
+
+
+You can convert the code to use the tidyverse style by using the dplyr package, which is part of the tidyverse ecosystem. Here's how you can do it:
+
+{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+In this code:
+
+We load the "palmerpenguins" library, the dplyr package from the tidyverse, and load the "penguins" dataset.
+
+We use the %>% operator (pipe) to create a pipeline of data manipulation. Within the filter function, we specify the condition to filter the data, so we keep only the rows where the species is "Adelie."
+
+This code achieves the same result but follows the tidyverse style of data manipulation using the dplyr package's functions.
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+Yes, the code works. 
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:**
+
+is there a significant difference in bill length across Adelie penguin sexes in the r palmerpenguins dataset?
+
+**Chat bot response:**
+
+To determine if there is a significant difference in bill length across Adelie penguin sexes in the "palmerpenguins" dataset, you can perform a statistical test, such as a t-test. Here's how you can do it in R:
+
+R
+library(palmerpenguins)
+
+data("penguins")
+
+# Filter the dataset to include only Adelie penguins
+adelie_penguins <- penguins[penguins$species == "Adelie",]
+
+# Perform a t-test for bill length by sex
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the results
+print(t_test_result)
+In this code:
+
+We load the "palmerpenguins" library and load the "penguins" dataset.
+
+We filter the dataset to include only the Adelie penguins using the species column.
+
+We perform a t-test using the t.test function. The formula bill_length_mm ~ sex specifies that we want to test whether there is a significant difference in bill length by sex. The data argument specifies the dataset where the variables are located.
+
+We print the results of the t-test using print(t_test_result).
+
+The output will include the p-value of the t-test. If the p-value is less than a chosen significance level (e.g., 0.05), it indicates that there is a significant difference in bill length across Adelie penguin sexes.
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+```{r}
+
+library(palmerpenguins)
+
+data("penguins")
+
+# Filter the dataset to include only Adelie penguins
+adelie_penguins <- penguins[penguins$species == "Adelie",]
+
+# Perform a t-test for bill length by sex
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the results
+print(t_test_result)
+
+```
+Yes, the code works. 
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+Originally, it did not. When I ask if assumptions are met:
+
+**Question to chat bot:**
+
+does the Adelie penguins data meet the assumptions of the Welch's Two sample t-test performed?
+
+**Chat bot response:**
+
+To perform a Welch's two-sample t-test, you should check whether the assumptions of the test are met. The key assumptions for the Welch's t-test are:
+
+Independence: The data points within each group (in this case, the two sexes) should be independent of each other. In the context of penguin data, this assumption is often reasonable, assuming that the data was collected in a way that ensures independence.
+
+Normality: The data within each group should be approximately normally distributed. This can be checked using normal probability plots or statistical tests for normality such as the Shapiro-Wilk test. Keep in mind that t-tests are somewhat robust to violations of this assumption, especially with larger sample sizes.
+
+Homogeneity of Variance: The variances in the two groups should be roughly equal. This can be checked with statistical tests for homogeneity of variances, such as Levene's test or Bartlett's test.
+
+To assess whether these assumptions are met for your Adelie penguins data, you can perform the following checks:
+
+Independence: This assumption is often reasonable for observational data, assuming that the penguins were sampled independently. It's more critical for experiments where independence can be controlled.
+
+Normality: You can check the normality of the data using Q-Q plots or the Shapiro-Wilk test for each group (male and female Adelie penguins). Here's how you can check the normality for each group in R:
+
+R
+# Check normality for male penguins
+shapiro.test(adelie_penguins$bill_length_mm[adelie_penguins$sex == "Male"])
+
+# Check normality for female penguins
+shapiro.test(adelie_penguins$bill_length_mm[adelie_penguins$sex == "Female"])
+
+If both p-values from the Shapiro-Wilk tests are greater than your chosen significance level (e.g., 0.05), you can assume that the data is reasonably normally distributed.
+
+Homogeneity of Variance: You can check for homogeneity of variances using Levene's test or Bartlett's test:
+
+R
+# Levene's test for homogeneity of variances
+leveneTest(adelie_penguins$bill_length_mm ~ adelie_penguins$sex)
+
+If the p-value from the Levene's test is greater than your chosen significance level, it suggests that the variances are approximately equal.
+
+If the assumptions are reasonably met, you can proceed with the Welch's two-sample t-test. If not, you may want to consider alternative non-parametric tests like the Wilcoxon rank-sum test (Mann-Whitney U test), which are less sensitive to violations of the normality and homogeneity of variance assumptions.
+
