@@ -1,0 +1,84 @@
+---
+title: "storm_exercise_erikalee"
+author: "Erika Lee"
+date: "2023-10-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+source("setup.r")
+
+library(tidyverse)
+library(ggplot2)
+library(rstatix)
+```
+
+Exercise Question: How have storms changed over time?
+
+```{r}
+#read in data
+read.csv("Data/storms.csv")
+
+data("storms")
+```
+
+```{r}
+#change date categories into one column
+library(lubridate)
+
+storms_2 <- storms %>%
+  unite(date, year, month, day, sep = "-")
+#change date column to a lubridate-recognized date column
+storms_2$date <- ymd(storms_2$date)
+```
+
+```{r}
+#exploring data
+
+storms_2 %>%
+  summary('status')
+```
+
+Question: How have the category size of storms changed over time?
+Hypothesis: The median category size is increasing between the year intervals of 1975-1990, 1991-2005, and 2005-2021.
+
+```{r}
+#remove all storms that do not have a category rating
+storms_hurricane <- storms_2 %>%
+  filter(status == "hurricane")
+
+#exploring category size
+category_size_dist <- ggplot(data = storms_hurricane) +
+  stat_count(mapping = aes(x = category))
+
+#creating buckets of data years and categories
+storms_hurricane$date <- ymd(storms_hurricane$date)
+
+#creating one storm using distinct
+storms_hurricane_grouped <- storms_hurricane %>%
+  distinct(name, date, category) %>%
+  group_by(date) %>%
+  #need to now combine storm names and dates... doing max by name... 
+  # not working yet... mutate(final_category, max(category))
+
+storms_hurricane %>%
+  mutate(timeframe = case_when(date >= "1975-07-21" & date <= "1990-10-19" ~ "1975-1990", date >= "1991-08-17" & date <= "2005-12-07" ~ "1991-2005", date >= "2006-08-27" & date <= "2021-10-05" ~ "2006-2021"))
+```
+
+```{r}
+#creating histograms of category by timeframe, not done yet
+
+#pivoting the data to long... not done yet
+timeframe_hurrican_long <- storms_hurricane %>%
+  pivot_longer(columns = "date", "category", )
+
+timeframe_histogram <- ggplot(data = storms_hurricane) +
+  geom_histogram(mapping = aes(x = category)) + 
+  facet_wrap(~"timeframe") + 
+
+print(timeframe_histogram)
+```
