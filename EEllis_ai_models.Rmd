@@ -1,0 +1,162 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question to chat bot:**
+"Explain what this chunk of code does:(Followed by code chunk)" (Posed to ChatGPT)
+
+**Chat bot response:** 
+Certainly! Let's break down the provided code step by step:
+
+1. `library(palmerpenguins)`: This line loads the R package "palmerpenguins," which contains the "penguins" dataset. The package must be installed and loaded before you can use its data.
+
+2. `data("penguins")`: This line loads the "penguins" dataset from the "palmerpenguins" package into your R environment. After this line is executed, you'll have a data frame called "penguins" that contains information about various penguins.
+
+3. `step_one <- function(x) { x <- as.character(x) }`: This code defines a function named "step_one." This function takes an argument `x` and converts it to a character type using `as.character(x)`. However, this function doesn't return the converted value; it simply converts it in-place, which means it doesn't change the original data frame.
+
+4. `species_list <- unlist(lapply(penguins$species, step_one))`: Here, it uses the `lapply` function to apply the "step_one" function to each element in the "species" column of the "penguins" data frame. The result is a list of character vectors. The `unlist` function is then used to convert this list into a single character vector called "species_list."
+
+5. `adelie_indices <- which(species_list == "Adelie")`: This line finds the indices of elements in "species_list" that are equal to "Adelie." The `which` function is used to determine the indices where this condition is met. As a result, "adelie_indices" will contain the indices of penguins with the species "Adelie."
+
+6. `adelie_penguins <- penguins[adelie_indices, ]`: Finally, this line creates a new data frame called "adelie_penguins" by subsetting the "penguins" data frame using the indices found in "adelie_indices." This effectively extracts the rows corresponding to penguins with the "Adelie" species and stores them in the new data frame.
+
+In summary, the code loads the "palmerpenguins" package and its "penguins" dataset, converts the species names to character type (although this step doesn't change the original data frame), identifies the indices of penguins with the "Adelie" species, and finally creates a new data frame called "adelie_penguins" containing only the "Adelie" penguins.**
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:**
+Can you please simplify this chunk of code: (Followed by code chunk)
+
+**Chat bot response:** 
+Certainly! This code can be simplified as follows:
+
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+
+In the simplified code:
+
+We load the "palmerpenguins" library and its "penguins" dataset using library(palmerpenguins) and data("penguins"), just as in the original code.
+
+We filter the "penguins" data frame directly to create "adelie_penguins." This is done by specifying the condition penguins$species == "Adelie". This code extracts the rows corresponding to penguins with the "Adelie" species into the new data frame "adelie_penguins."
+**
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot: "Is the last response written in tidyverse style"**
+
+**Chat bot response:**
+My previous response is not written in the tidyverse style, which is a specific coding style associated with the tidyverse collection of packages in R. The tidyverse style encourages the use of functions and operators from the tidyverse packages, such as dplyr and ggplot2, to make data manipulation and visualization more consistent and readable.
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (When I asked ChatGPT if the last code chunk was written in tidyverse style, it automatically gave me tidyverse style code in response.)
+
+**Chat bot response:** 
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+Yes it does. 
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:**
+Please write code to determine if there is a significant difference in bill length across sexes in the Adelie penguin data set
+
+**Chat bot response:**
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+# Filter the Adelie penguins
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+# Perform a t-test for bill length by sex
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the t-test result
+print(t_test_result)
+```
+
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+Yes, it works. And it provided an explanation of what is happening in each code chunk. 
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:**
+Does the Adelie penguins data set meet the assumptions required for a Welch two sample t test
+
+**Chat bot response:**
+
+To perform a Welch two-sample t-test, certain assumptions need to be met. These assumptions include:
+
+Independence: Observations in the two groups (in this case, male and female Adelie penguins) should be independent. This assumption is generally met if the penguins were randomly sampled or if the sample size is large enough that violations of independence are not a concern.
+
+Normality: Each group should follow an approximately normal distribution. For the Welch t-test, the assumption of normality is less critical than for the standard t-test, as it is more robust to violations of this assumption, especially with larger sample sizes.
+
+Homogeneity of Variance: The variances of the two groups should be approximately equal. This assumption is less critical for the Welch t-test compared to the standard t-test, as the Welch t-test is robust to violations of this assumption.
+
+To determine whether the Adelie penguins data set meets these assumptions, you can assess them visually and statistically. This may involve plotting histograms or quantile-quantile (Q-Q) plots to check for normality, and you can also perform tests for homogeneity of variance, such as Levene's test.
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+
+data("penguins")
+
+# Filter the Adelie penguins
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+# Check for normality
+shapiro.test(adelie_penguins$bill_length_mm)
+
+# Check for homogeneity of variance
+leveneTest(bill_length_mm ~ sex, data = adelie_penguins)
+```
+
