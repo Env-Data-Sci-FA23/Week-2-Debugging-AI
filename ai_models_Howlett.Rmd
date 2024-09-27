@@ -1,0 +1,297 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:**
+
+What does this code in R studio do
+
+library(palmerpenguins)
+
+data("penguins")
+
+step_one \<- function(x){
+x \<- as.character(x)
+}
+
+species_list \<- unlist(lapply(penguins\$species, step_one))
+adelie_indices \<- which(species_list == "Adelie")
+adelie_penguins \<- penguins[adelie_indices, ]
+
+## 
+
+**Chat bot response:**
+
+The provided code in R Studio performs the following tasks:
+
+-   Load the `palmerpenguins` library, which contains the Palmer Archipelago (Antarctica) penguin dataset
+
+-   Load the `penguins` dataset, which includes measurements of three penguin species (Adelie,
+    Chinstrap, and Gentoo) collected near Palmer Station, Antarctica
+
+-   Define a function called `step_one` that converts the input to a character vector using the `as.character()` function.
+
+-   Apply the `step_one` function to the `species` column of the `penguins` dataset using the `lapply()` function and `unlist()` the result to create a vector of species names.
+
+-   Find the indices of the elements in the `species_list` vector that are equal to "Adelie" using the `which()` function.
+
+-   Subset the `penguins` dataset using the `adelie_indices` vector to create a new dataset called `adelie_penguins`, which contains only the Adelie penguins' data.
+
+-   In summary, the code is used to filter the `penguins` dataset and create a new dataset (`adelie_penguins`) that contains only the data for Adelie penguins.
+
+2)  Ask the AI model to simplify the code in question
+
+**Question to chat bot:**
+
+Could you simplify this code please
+
+**Chat bot response:**
+
+```{r}
+library(palmerpenguins)
+data("penguins")
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+
+```
+
+In this simplified version:
+
+-   The `step_one` function is removed as it is not necessary for the desired outcome.
+
+-   The `lapply()` and `unlist()` functions are replaced with a direct comparison operation to filter the `penguins` dataset.
+
+-   The `which()` function is not needed as the direct comparison operation returns a logical vector that can be used for subsetting.
+
+-   The simplified code achieves the same result as the original code by creating a new dataset called `adelie_penguins` that contains only the data for Adelie penguins.
+
+Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot:**
+
+Is this code using tidyverse
+
+**Chat bot response:**
+
+No, the provided code does not use the `tidyverse` package. The `tidyverse`
+is an opinionated collection of R packages designed for data science,
+and the code in question does not load or utilize any of the `tidyverse` packages
+
+Instead, it uses the `palmerpenguins` package to load the penguin dataset and performs data manipulation using base R functions.
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*:
+
+Could you please convert the code using tidyverse
+
+**Chat bot response:**
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+In this version:
+
+-   The `tidyverse` package is loaded using the `library()` function
+
+-   The `palmerpenguins` package is also loaded to access the penguin dataset
+
+-   The `step_one` function and the `species_list` variable are removed as they are not necessary for the desired outcome.
+
+-   The `adelie_indices` and `adelie_penguins` variables are replaced with a single pipeline (`%>%`) that filters the penguins dataset for species equal to "Adelie" using the `filter()` function from the `dplyr` package
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+    The code provided from perplexity works!
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:**
+
+is there a significant difference in bill length across sexes for Adelie penguins
+
+**Chat bot response:**
+
+Yes, there is a significant difference in bill length across sexes for Adelie penguins in the `palmerpenguins` dataset. The mean bill length for males is greater than the mean bill
+length for females, indicating sexual dimorphism in this trait
+
+Here's the code to analyze the difference in bill length using the `tidyverse` package:
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie") %>%
+  select(bill_length_mm, sex) %>%
+  drop_na()
+
+adelie_penguins %>%
+  group_by(sex) %>%
+  summarise(mean_bill_length = mean(bill_length_mm), 
+            sd_bill_length = sd(bill_length_mm), 
+            n = n())
+
+```
+
+This code:
+
+-   Loads the tidyverse and palmerpenguins packages.
+
+-   Filters the penguins dataset to only include Adelie penguins.
+
+-   Selects the bill length and sex columns.
+
+-   Removes any rows with missing values.
+
+-   Groups the data by sex.
+
+-   Calculates the mean bill length, standard deviation, and number of observations for each sex.
+
+The output will show the mean bill length, standard deviation, and number of observations for male and female Adelie penguins, confirming the significant difference in bill length across sexes.
+
+1.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+    -   The code produced does work and provides the standard deviation, but I would maybe want to perform a t-test to get a p-value.
+
+2.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:**
+
+-   did you make sure the adelie penguins meet the assumptions for the statistical test?
+
+-   could you do that for me please
+
+-   how can I tell if they are significantly different
+
+**Chat bot response:**
+
+The first question just generated a text response with a description of what to do
+
+The second question provided step-by-step instructions on what tests to perform and suggestions of what tests to use if it does not meet assumptions
+
+The third question was more streamlined, providing the following code
+
+To determine if there is a significant difference in bill length across sexes for Adelie penguins in the `palmerpenguins` dataset, you can use a t-test. Here's how you can do it in R:
+
+1.  Load the necessary packages and data:
+
+    ```{r}
+    library(tidyverse)
+    library(palmerpenguins)
+
+    data("penguins")
+
+    ```
+
+2.  Filter the data to include only Adelie penguins:
+
+    ```{r}
+    adelie_penguins <- penguins %>%
+      filter(species == "Adelie")
+    ```
+
+3.  Check the assumptions for the t-test:
+
+    1.  **Normality**:
+        Plot a histogram and a Q-Q plot of the bill length for each sex to
+        assess normality. If the data is approximately normally distributed, the
+        assumption is met.
+
+    ```{r}
+    adelie_penguins %>%
+      ggplot(aes(x = bill_length_mm, fill = sex)) +
+      geom_histogram(binwidth = 1, alpha = 0.5, position = "identity") +
+      geom_density(alpha = 0.2) +
+      facet_wrap(~sex, ncol = 1) +
+      theme_minimal()
+
+    ```
+
+4.  **Equal variances**: Perform a Levene's test to check if the variances of the two groups are
+    significantly different. If the p-value is greater than 0.05, the assumption is met.
+
+    ```{r}
+    leveneTest(bill_length_mm ~ sex, data = adelie_penguins)
+
+    ```
+
+Conduct a t-test to compare the bill length between male and female Adelie penguins:
+
+```{r}
+t.test(bill_length_mm ~ sex, data = adelie_penguins, var.equal = TRUE)
+```
+
+The output of the t-test will include the p-value, which indicates whether the difference in bill length between the two sexes is statistically significant. If the p-value is less than 0.05, we can
+conclude that there is a significant difference in bill length between male and female Adelie penguins.
+
+-   This code does not work, R says there is no leveneTest. So I asked it why the leveneTest code chunk doesn't work and this is what it provided:
+
+    -   Apologies for the confusion. The `leveneTest()` function is not part of the base R package. Instead, you can use the `fligner.test()` function from the base R package to perform a non-parametric test for equal variances. Here's an updated version of the code:
+
+        ```{r}
+        library(tidyverse)
+        library(palmerpenguins)
+
+        data("penguins")
+
+        adelie_penguins <- penguins %>%
+          filter(species == "Adelie") %>%
+          select(bill_length_mm, sex) %>%
+          drop_na()
+
+        # Check the assumptions for the t-test
+
+        # Normality
+        adelie_penguins %>%
+          ggplot(aes(x = bill_length_mm, fill = sex)) +
+          geom_histogram(binwidth = 1, alpha = 0.5, position = "identity") +
+          geom_density(alpha = 0.2) +
+          facet_wrap(~sex, ncol = 1) +
+          theme_minimal()
+
+        # Equal variances (non-parametric test)
+        fligner.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+        # Conduct a t-test or a Wilcoxon rank-sum test
+        t_test <- t.test(bill_length_mm ~ sex, data = adelie_penguins, var.equal = TRUE)
+        t_test
+
+
+        ```
+
+If the p-value from the `fligner.test()` is greater than 0.05, we can assume equal variances, and the t-test is appropriate. If the p-value is less than 0.05, we should use the Wilcoxon rank-sum test instead. The output of the t-test or Wilcoxon rank-sum test will include the p-value, which indicates whether the difference in bill length between the two sexes is statistically
+significant. If the p-value is less than 0.05, we can conclude that there is a significant difference in bill length between male and female Adelie penguins.
+
+All of this code runs, and the p-value for the t-test is 4.44e-15
