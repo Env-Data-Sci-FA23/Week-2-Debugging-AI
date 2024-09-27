@@ -1,0 +1,178 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:** What does this code chunk do?
+
+**Chat bot response:** (From perplexity)
+
+This code chunk loads the **`palmerpenguins`** dataset and creates a subset of the data containing only Adelie penguins. Here is a breakdown of the code:
+
+-   **`library(palmerpenguins)`** loads the **`palmerpenguins`** package, which contains the **`penguins`** dataset
+
+-   **`data("penguins")`** loads the **`penguins`** dataset into the R environment
+
+-   **`step_one <- function(x){x <- as.character(x)}`** defines a function called **`step_one`** that converts the input to a character string. However, this function is not used in the rest of the code and can be removed without affecting the output.
+
+-   **`species_list <- unlist(lapply(penguins$species, step_one))`** creates a vector of species names by applying the **`step_one`** function to the **`species`** column of the **`penguins`** dataset. Since **`step_one`** is not used, this line can be simplified to **`species_list <- penguins$species`**.
+
+-   **`adelie_indices <- which(species_list == "Adelie")`** creates a vector of indices where the species is "Adelie".
+
+-   **`adelie_penguins <- penguins[adelie_indices, ]`** creates a subset of the **`penguins`** dataset containing only Adelie penguins.
+
+In summary, this code chunk loads the **`palmerpenguins`** dataset and creates a subset of the data containing only Adelie penguins.
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:** Can you simplify the code that I gave you?
+
+**Chat bot response:**
+
+Certainly! Here is a simplified version of the code:
+
+```{r}
+library(palmerpenguins)
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+```
+
+This code does the same thing as the original code, but it removes the unnecessary **`step_one`** function and simplifies the subset creation by using a logical comparison directly on the **`species`** column of the **`penguins`** dataset.
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+No, perplexity's response to Question 2 response was in the base r style.
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot:** is this code in tidyverse style? (Katie asked me to ask perplexity to see if it knew if the code was in tidyverse or not, and it returned the tidyverse style code I could use too).
+
+**Chat bot response:**
+
+The code chunk provided does not follow the tidyverse style guide.
+
+. Here are some of the ways in which the code could be improved to follow the tidyverse style:
+
+-   The code should use the pipe operator **`%>%`** to chain together operations instead of nesting them. For example, instead of creating a vector of Adelie indices and then subsetting the **`penguins`** dataset, the code could use the following pipe chain: **`penguins %>% filter(species == "Adelie")`**.
+
+-   The code should use consistent naming conventions. For example, the variable **`adelie_penguins`** should be named using snake_case instead of camelCase.
+
+-   The code should avoid using unnecessary functions. For example, the **`step_one`** function is not used in the code and can be removed.
+
+-   The code should use comments to explain the purpose of each step. For example, a comment could be added above the subset creation step to explain that it is creating a subset of Adelie penguins.
+
+Here is an example of how the code could be rewritten to follow the tidyverse style:
+
+```{r}
+library(palmerpenguins)  # Create a subset of Adelie penguins 
+adelie_penguins <- penguins %>%    
+  filter(species == "Adelie")
+```
+
+This code uses the pipe operator to chain together operations, follows consistent naming conventions, removes unnecessary functions, and includes a comment to explain the purpose of the subset creation step.
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+Yes, the code that perplexity put together for me works.
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:** is there a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R)?
+
+**Chat bot response:** Yes, we can use the **`tidyverse`** package to analyze the **`palmerpenguins`** dataset in a tidyverse style. Here is an example code that answers the question using the **`tidyverse`** package:
+
+```{r}
+library(palmerpenguins)
+library(tidyverse)
+
+# Create a subset of Adelie penguins
+adelie_penguins <- penguins %>% 
+  filter(species == "Adelie")
+
+# Compare bill length between male and female Adelie penguins
+adelie_penguins %>% 
+  group_by(sex) %>% 
+  summarize(mean_bill_length = mean(bill_length_mm), 
+            sd_bill_length = sd(bill_length_mm), 
+            n = n()) %>% 
+  pivot_longer(cols = c(mean_bill_length, sd_bill_length), 
+               names_to = "statistic", 
+               values_to = "value") %>% 
+  ggplot(aes(x = sex, y = value, fill = statistic)) +
+  geom_col(position = "dodge") +
+  labs(x = "Sex", y = "Bill length (mm)", fill = "") +
+  scale_fill_manual(values = c("#0072B2", "#E69F00"), 
+                    labels = c("Mean", "SD")) +
+  ggtitle("Comparison of Bill Length Across Adelie Penguin Sexes") +
+  theme_minimal()
+```
+
+This code uses the **`filter`** function to create a subset of Adelie penguins, then uses the **`group_by`** and **`summarize`** functions to calculate the mean and standard deviation of bill length for male and female Adelie penguins. The **`pivot_longer`** function is used to reshape the data into a format that can be plotted, and the **`ggplot`** function is used to create a bar plot comparing the mean and standard deviation of bill length between male and female Adelie penguins. The resulting plot can be used to determine if there is a significant difference in bill length across Adelie penguin sexes.
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+The code does work, it makes a graph that compares the mean and standard deviation of bill length for each sex, but it does not remove NA values and it doesn't look exactly like the graphs that we've been making in class.
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:** can you assess whether the Adelie penguins data met the assumptions of the statistical test?
+
+**Chat bot response:**
+
+Based on the information available in the search results, it is not clear which statistical test is being used to compare bill length across Adelie penguin sexes. However, we can assess whether the assumptions of a t-test are met based on the information available in the **`palmerpenguins`** dataset.Here are the assumptions of a two-sample t-test:
+
+1.  Normality: The data should be normally distributed within each group.
+
+2.  Homogeneity of variance: The variance of the data should be equal between the two groups.
+
+3.  Independence: The observations in each group should be independent of each other.
+
+To assess whether these assumptions are met, we can create a histogram of bill length for male and female Adelie penguins and visually inspect the distribution. We can also use a box plot to check for outliers and compare the spread of the data between the two groups. Additionally, we can use a statistical test such as the Shapiro-Wilk test to formally test for normality, and the Levene's test to test for homogeneity of variance.Based on the information available in the search results, it is not clear whether these tests have been performed on the **`palmerpenguins`** dataset. However, we can use the **`ggplot2`** package to create a histogram and box plot of bill length for male and female Adelie penguins, and visually inspect the distribution and spread of the data. Here is an example code:
+
+```{r}
+library(palmerpenguins)
+library(ggplot2)
+
+# Create a subset of Adelie penguins
+adelie_penguins <- penguins %>% 
+  filter(species == "Adelie")
+
+# Create a histogram of bill length for male and female Adelie penguins
+ggplot(adelie_penguins, aes(x = bill_length_mm, fill = sex)) +
+  geom_histogram(alpha = 0.5, position = "identity", bins = 20) +
+  labs(x = "Bill length (mm)", y = "Count", fill = "Sex") +
+  ggtitle("Distribution of Bill Length Across Adelie Penguin Sexes") +
+  theme_minimal()
+
+# Create a box plot of bill length for male and female Adelie penguins
+ggplot(adelie_penguins, aes(x = sex, y = bill_length_mm, fill = sex)) +
+  geom_boxplot() +
+  labs(x = "Sex", y = "Bill length (mm)", fill = "Sex") +
+  ggtitle("Comparison of Bill Length Across Adelie Penguin Sexes") +
+  theme_minimal()
+```
+
+These plots can be used to visually assess whether the assumptions of a t-test are met. If the data is not normally distributed or the variance is not equal between the two groups, a different statistical test may be more appropriate.
