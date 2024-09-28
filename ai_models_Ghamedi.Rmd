@@ -1,0 +1,281 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot: ChatGPT:**
+
+What does the following block of code do: {r} library(palmerpenguins)
+
+data("penguins")
+
+step_one \<- function(x){ x \<- as.character(x) }
+
+species_list \<- unlist(lapply(penguins\$species, step_one)) adelie_indices \<- which(species_list == "Adelie") adelie_penguins \<- penguins[adelie_indices, ]
+
+**Chat bot response:**
+
+The provided block of code does the following:
+
+1.  It loads the `palmerpenguins` R package using the `library()` function, which makes the package's functions and data available for use.
+
+2.  It loads the dataset named "penguins" from the package using the `data()` function. This dataset contains information about penguins.
+
+3.  It defines a custom R function named `step_one`, which takes one argument `x`. Inside the function, it converts the input `x` into a character using the `as.character()` function. However, it doesn't return the result, so the conversion is done but not saved or used.
+
+4.  It uses the `lapply()` function to apply the `step_one` function to each element of the "species" column in the "penguins" dataset. The result is a list of character vectors, and the `unlist()` function is used to convert this list into a single character vector named `species_list`. This character vector likely contains the species names of the penguins.
+
+5.  It uses the `which()` function to find the indices (row numbers) where the elements in the `species_list` are equal to "Adelie." These indices correspond to rows in the original dataset where the penguin species is "Adelie." The result is stored in the `adelie_indices` variable.
+
+6.  Finally, it extracts a subset of the "penguins" dataset by using the `adelie_indices` to select rows where the species is "Adelie," and this subset is stored in the `adelie_penguins` variable. This `adelie_penguins` variable likely contains the data for penguins of the "Adelie" species.
+
+The code essentially extracts the data for Adelie penguins from the "penguins" dataset and stores it in a new variable for further analysis or processing.
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:**
+
+**Chat bot response:**
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot:**
+
+Simplify the code above
+
+**Chat bot response:**
+
+Here's a simplified version of the code that achieves the same result:
+
+``` r
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+```
+
+In this simplified version:
+
+1.  We load the "palmerpenguins" package and its dataset as before.
+2.  We directly filter the "penguins" dataset using a logical condition to select rows where the "species" column is equal to "Adelie." This creates the `adelie_penguins` variable, which contains the data for Adelie penguins.
+
+This simplified code achieves the same result as the original code but is more concise and easier to understand.
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*: convert the code above into {tidyverese} style
+
+**Chat bot response:**
+
+Here's the equivalent code using the "tidyverse" style with the `dplyr` package:
+
+``` r
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+In this code:
+
+1.  We load the "palmerpenguins" package and the "dplyr" package from the "tidyverse."
+
+2.  We load the "penguins" dataset as before.
+
+3.  We use the `%>%` operator to pipe the "penguins" dataset into the `filter()` function from the "dplyr" package. The `filter()` function is used to filter the rows where the "species" column is equal to "Adelie." This creates the `adelie_penguins` variable, which contains the data for Adelie penguins.
+
+Using the "tidyverse" style can make your code more readable and expressive, especially when dealing with data manipulation tasks.
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+Test to see if this code works:
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+Try again for the error --- first block returned an error, this works:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  dplyr::filter(species == "Adelie")
+```
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:**
+
+Based on the code above, is there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Chat bot response:**
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+# Separate the data for male and female Adelie penguins
+adelie_male <- adelie_penguins %>%
+  filter(sex == "male")
+adelie_female <- adelie_penguins %>%
+  filter(sex == "female")
+
+# Perform a t-test to compare bill lengths
+t_test_result <- t.test(adelie_male$bill_length_mm, adelie_female$bill_length_mm)
+
+# Print the results
+print(t_test_result)
+```
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+A code chunk above was created and it worked.
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:**
+
+Did the above assessment of the Adelie penguins data meet the assumptions of the Welch two sample t-test? Does the code test for normality or equal variances? If not, regenerate the code to test for the assumptions.
+
+**Chat bot response:**
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+library(broom)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+# Separate the data for male and female Adelie penguins
+adelie_male <- adelie_penguins %>%
+  filter(sex == "male")
+adelie_female <- adelie_penguins %>%
+  filter(sex == "female")
+
+# Check for normality using the Shapiro-Wilk test
+shapiro_test_male <- shapiro.test(adelie_male$bill_length_mm)
+shapiro_test_female <- shapiro.test(adelie_female$bill_length_mm)
+
+# Check for equal variances using Levene's test
+levene_test <- leveneTest(adelie_male$bill_length_mm, adelie_female$bill_length_mm)
+
+# Perform the Welch two-sample t-test
+t_test_result <- t.test(adelie_male$bill_length_mm, adelie_female$bill_length_mm)
+
+# Print the results
+cat("Shapiro-Wilk Test for Normality (Male Penguins): p-value =", shapiro_test_male$p.value, "\n")
+cat("Shapiro-Wilk Test for Normality (Female Penguins): p-value =", shapiro_test_female$p.value, "\n")
+cat("Levene's Test for Equal Variances: p-value =", levene_test$p.value, "\n")
+cat("Welch Two-Sample t-Test: p-value =", t_test_result$p.value, "\n")
+
+```
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+# Separate the data for male and female Adelie penguins
+adelie_male <- adelie_penguins %>%
+  filter(sex == "male")
+adelie_female <- adelie_penguins %>%
+  filter(sex == "female")
+
+# Check for normality using the Shapiro-Wilk test
+shapiro_test_male <- shapiro.test(adelie_male$bill_length_mm)
+shapiro_test_female <- shapiro.test(adelie_female$bill_length_mm)
+
+# Check for equal variances using Bartlett's test
+bartlett_test <- bartlett.test(adelie_male$bill_length_mm, adelie_female$bill_length_mm)
+
+# Perform the Welch two-sample t-test
+t_test_result <- t.test(adelie_male$bill_length_mm, adelie_female$bill_length_mm)
+
+# Print the results
+cat("Shapiro-Wilk Test for Normality (Male Penguins): p-value =", shapiro_test_male$p.value, "\n")
+cat("Shapiro-Wilk Test for Normality (Female Penguins): p-value =", shapiro_test_female$p.value, "\n")
+cat("Bartlett's Test for Equal Variances: p-value =", bartlett_test$p.value, "\n")
+cat("Welch Two-Sample t-Test: p-value =", t_test_result$p.value, "\n")
+
+```
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+
+# Separate the data for male and female Adelie penguins
+adelie_male <- adelie_penguins %>%
+  filter(sex == "male")
+adelie_female <- adelie_penguins %>%
+  filter(sex == "female")
+
+# Check for normality using the Shapiro-Wilk test
+shapiro_test_male <- shapiro.test(adelie_male$bill_length_mm)
+shapiro_test_female <- shapiro.test(adelie_female$bill_length_mm)
+
+# Check for equal variances using the Fligner-Killeen test
+fligner_test <- fligner.test(adelie_male$bill_length_mm, adelie_female$bill_length_mm)
+
+# Perform the Welch two-sample t-test
+t_test_result <- t.test(adelie_male$bill_length_mm, adelie_female$bill_length_mm)
+
+# Print the results
+cat("Shapiro-Wilk Test for Normality (Male Penguins): p-value =", shapiro_test_male$p.value, "\n")
+cat("Shapiro-Wilk Test for Normality (Female Penguins): p-value =", shapiro_test_female$p.value, "\n")
+cat("Fligner-Killeen Test for Equal Variances: p-value =", fligner_test$p.value, "\n")
+cat("Welch Two-Sample t-Test: p-value =", t_test_result$p.value, "\n")
+
+```
