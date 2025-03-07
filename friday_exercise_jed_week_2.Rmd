@@ -1,0 +1,66 @@
+# how do storms change over time?
+
+```{r}
+packageLoad <-
+  function(x) {
+    for (i in 1:length(x)) {
+      if (!x[i] %in% installed.packages()) {
+        install.packages(x[i])
+      }
+      library(x[i], character.only = TRUE)
+    }
+  }
+
+# create a string of package names
+packages <- c('tidyverse',
+              'palmerpenguins',
+              'lterdatasampler','purrr','rstatix')
+
+packageLoad(packages)
+
+```
+
+```{r}
+storms <- read_csv("data/storms.csv")
+```
+
+```{r}
+storms %>%
+ggplot() +
+  geom_line(aes(x=year,y=wind))
+
+```
+
+```{r}
+storms %>%
+  ggplot() +
+  geom_histogram(aes(x=category))
+ 
+```
+
+```{r}
+mutate <- sum(storms$status == 'hurricane')
+```
+
+```{r}
+huricane <- filter(storms, status == 'hurricane')
+hurricanefreq <- huricane %>%
+  distinct(name,year) %>%
+  mutate(Gret=ifelse(name=="Katie", "yes", "no"))
+ggplot(hurricanefreq)+
+  geom_histogram(aes(x=year, color=Gret))
+```
+
+```{r}
+storms %>%
+  ggplot() +
+ (aes(x=status))
+ 
+```
+
+```{r}
+storms %>%
+ggplot() +
+  geom_col(aes(x=month,y=status))
+
+```

@@ -1,0 +1,228 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+```{r}
+packageLoad <-
+  function(x) {
+    for (i in 1:length(x)) {
+      if (!x[i] %in% installed.packages()) {
+        install.packages(x[i])
+      }
+      library(x[i], character.only = TRUE)
+    }
+  }
+
+# create a string of package names
+packages <- c('tidyverse',
+              'palmerpenguins',
+              'lterdatasampler','purrr','rstatix')
+
+packageLoad(packages)
+
+```
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot: what does this code chunk do? library(palmerpenguins)
+
+data("penguins")
+
+step_one \<- function(x){
+x \<- as.character(x)
+}
+
+species_list \<- unlist(lapply(penguins\$species, step_one))
+adelie_indices \<- which(species_list == "Adelie")
+adelie_penguins \<- penguins[adelie_indices, ]**
+
+**Chat bot response:** The code chunk provided loads the **`palmerpenguins`** dataset and creates a subset of the data containing only Adelie penguins. Here is a step-by-step explanation of what the code does:
+
+1.  The **`library(palmerpenguins)`** command loads the **`palmerpenguins`** package, which contains the **`penguins`** dataset.
+
+2.  The **`data("penguins")`** command loads the **`penguins`** dataset into the R environment.
+
+3.  The **`step_one`** function is defined to convert a variable **`x`** to a character string using the **`as.character()`** function.
+
+4.  The **`lapply()`** function is used to apply the **`step_one()`** function to each element of the **`species`** column in the **`penguins`** dataset. This creates a list of character strings.
+
+5.  The **`unlist()`** function is used to convert the list of character strings to a vector.
+
+6.  The **`which()`** function is used to find the indices of the elements in the vector that are equal to "Adelie".
+
+7.  The **`penguins[adelie_indices, ]`** command is used to subset the **`penguins`** dataset and create a new dataset called **`adelie_penguins`**.
+
+In summary, the code chunk creates a new dataset called **`adelie_penguins`** that contains only the observations for Adelie penguins in the **`penguins`** dataset.The **`palmerpenguins`** dataset contains observations for three different species of penguins: Adelie, Chinstrap, and Gentoo. The dataset was collected from three islands in the Palmer Archipelago, Antarctica
+
+[**2**](https://towardsdatascience.com/plotly-pandas-for-the-palmer-penguins-f5cdab3c16c8)
+
+. The code chunk is useful for creating a subset of the data that only contains observations for Adelie penguins, which can be useful for further analysis or visualization.
+
+2)  Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot: simplify this code. library(palmerpenguins)
+
+data("penguins")
+
+step_one \<- function(x){
+x \<- as.character(x)
+}
+
+species_list \<- unlist(lapply(penguins\$species, step_one))
+adelie_indices \<- which(species_list == "Adelie")
+adelie_penguins \<- penguins[adelie_indices, ]**
+
+**Chat bot response:** The provided code chunk loads the **`palmerpenguins`** dataset and creates a subset of the data containing only Adelie penguins. Here is a simplified version of the code:
+
+```         
+library(palmerpenguins)
+data("penguins")
+adelie_penguins <- subset(penguins, species == "Adelie")
+```
+
+This simplified code does the same thing as the original code, but it is shorter and easier to read. The **`subset()`** function is used to create a subset of the **`penguins`** dataset that only contains observations for Adelie penguins. The resulting dataset is stored in a variable called **`adelie_penguins`**.
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot: is this code in tidyverse style? library(palmerpenguins)
+
+data("penguins")
+
+step_one \<- function(x){
+x \<- as.character(x)
+}
+
+species_list \<- unlist(lapply(penguins\$species, step_one))
+adelie_indices \<- which(species_list == "Adelie")
+adelie_penguins \<- penguins[adelie_indices, ]**
+
+**Chat bot response:** The provided code chunk is not in tidyverse style. The code uses base R functions such as **`unlist()`** and **`which()`** to create a subset of the **`penguins`** dataset containing only Adelie penguins. In contrast, the tidyverse style emphasizes the use of a consistent set of packages and functions to perform data manipulation tasks. The tidyverse style is based on the **`dplyr`** package, which provides a set of functions for data manipulation that are designed to work together seamlessly.Here is an example of how the code could be rewritten in tidyverse style:
+
+```         
+library(palmerpenguins)
+data("penguins")
+
+library(dplyr)
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+In this code, the **`dplyr`** package is loaded along with the **`palmerpenguins`** package. The **`filter()`** function from **`dplyr`** is used to create a subset of the **`penguins`** dataset that only contains observations for Adelie penguins. The resulting dataset is stored in a variable called **`adelie_penguins`**.Note that the tidyverse style is not necessarily better or worse than the base R style, but it can make code more readable and easier to maintain, especially for larger and more complex datasets.
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*: **convert this code to tidyverse style. library(palmerpenguins)
+
+data("penguins")
+
+step_one \<- function(x){
+x \<- as.character(x)
+}
+
+species_list \<- unlist(lapply(penguins\$species, step_one))
+adelie_indices \<- which(species_list == "Adelie")
+adelie_penguins \<- penguins[adelie_indices, ]**
+
+## 
+
+**Chat bot response:** To convert the provided code chunk to tidyverse style, we can use the **`filter()`** function from the **`dplyr`** package to create a subset of the **`penguins`** dataset that only contains observations for Adelie penguins. Here is the code in tidyverse style:
+
+```         
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+In this code, we first load the **`palmerpenguins`** package and the **`dplyr`** package. We then load the **`penguins`** dataset using the **`data()`** function. The **`filter()`** function from **`dplyr`** is used to create a subset of the **`penguins`** dataset that only contains observations for Adelie penguins. The resulting dataset is stored in a variable called **`adelie_penguins`**.Note that the tidyverse style emphasizes the use of a consistent set of packages and functions to perform data manipulation tasks. The **`dplyr`** package provides a set of functions for data manipulation that are designed to work together seamlessly.
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+
+data("penguins")
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+The code perplexity gave worked!
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:** calculate if there is a significant difference in bill lengths across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Chat bot response:** To calculate if there is a significant difference in bill lengths across Adelie penguin sexes in the **`palmerpenguins`** dataset, we can perform a t-test using the **`t.test()`** function in R. Here is the code:
+
+```         
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- subset(penguins, species == "Adelie")
+
+t.test(bill_length_mm ~ sex, data = adelie_penguins)
+```
+
+In this code, we first load the **`palmerpenguins`** package and load the **`penguins`** dataset using the **`data()`** function. We then create a subset of the **`penguins`** dataset that only contains observations for Adelie penguins using the **`subset()`** function. The **`t.test()`** function is used to perform a t-test on the **`bill_length_mm`** variable, comparing the bill lengths of male and female Adelie penguins. The resulting output will include the t-statistic, degrees of freedom, p-value, and confidence interval for the difference in means between the two groups.Note that the t-test assumes that the data is normally distributed and that the variances of the two groups are equal. If these assumptions are not met, alternative tests such as the Wilcoxon rank-sum test may be more appropriate.
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- subset(penguins, species == "Adelie")
+
+t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+```
+
+8.Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+**Question to chat bot:** calculate could you provide if there is a significant difference in bill lengths across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Chat bot response:** Based on the available search results, we can conclude that there is a significant difference in bill lengths across Adelie penguin sexes in the **`palmerpenguins`** dataset. Specifically, the mean bill length for males is greater than the mean bill length for females in Adelie penguins
+
+. However, to confirm this statistically, we can perform a t-test using the **`t.test()`** function in R.Here is the code to perform the t-test:
+
+```         
+library(palmerpenguins)
+
+data("penguins")
+
+adelie_penguins <- subset(penguins, species == "Adelie")
+
+t.test(bill_length_mm ~ sex, data = adelie_penguins)
+```
+
+In this code, we first load the **`palmerpenguins`** package and load the **`penguins`** dataset using the **`data()`** function. We then create a subset of the **`penguins`** dataset that only contains observations for Adelie penguins using the **`subset()`** function. The **`t.test()`** function is used to perform a t-test on the **`bill_length_mm`** variable, comparing the bill lengths of male and female Adelie penguins. The resulting output will include the t-statistic, degrees of freedom, p-value, and confidence interval for the difference in means between the two groups.If the p-value is less than the significance level (usually 0.05), we can reject the null hypothesis and conclude that there is a significant difference in bill lengths across Adelie penguin sexes in the **`palmerpenguins`** dataset.
