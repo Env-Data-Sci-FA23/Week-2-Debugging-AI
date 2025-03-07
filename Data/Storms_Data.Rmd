@@ -1,0 +1,197 @@
+---
+title: "Storms"
+output: html_document
+date: "2023-10-27"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+stormdata<-read.csv("storms.csv")
+```
+
+```{r}
+library(dplyr)
+storms <- stormdata %>% 
+  mutate(storm_identifier = paste(name, year, sep = "_"))
+```
+
+```{r}
+storms <- storms %>%
+  select(storm_identifier, everything())
+```
+
+```{r}
+unique_count <- storms %>%
+  summarize(unique_count = n_distinct(storm_identifier))
+
+# Access the result
+unique_value_count <- unique_count$unique_count
+```
+
+```{r}
+#just want the storms that are defined as hurricanes
+library("tidyverse")
+hurricanes <- storms %>%
+  filter(status == "hurricane")
+
+```
+
+```{r}
+# Filter the dataset to include only Category 1 hurricanes
+hurricanes <- hurricanes %>%
+  filter(category == 1)
+```
+
+```{r}
+library(dplyr)
+
+# hurricanes in the year 2000 or later 
+hurricanes <- hurricanes %>%
+  filter(year >= 2000)
+
+```
+
+```{r}
+#just got rid of any rows with NA values 
+hurricanes <- hurricanes %>%
+  na.omit()
+```
+
+```{r}
+library(dplyr)
+
+# Filter the dataset to keep the first occurrence of each unique storm name
+hurricanes <- hurricanes %>%
+  group_by(storm_identifier) %>%
+  slice(1) %>%
+  ungroup()
+
+# Filter the dataset to include only Category 1 hurricanes
+hurricanes <- hurricanes %>%
+  filter(category == 1)
+
+# Create the map
+library(leaflet)
+
+# Create a leaflet map
+map <- leaflet(data = hurricanes) %>%
+  addTiles()  # Add a default basemap
+
+# Enable marker clustering (optional)
+map <- map %>%
+  addMarkers(lng = ~long, lat = ~lat,
+             clusterOptions = markerClusterOptions(),  # Enable marker clustering
+             popup = ~paste(storm_identifier))  # Display storm identifiers
+
+# Display the map
+map
+
+```
+
+```{r}
+library(dplyr)
+library(leaflet)
+
+# Get the unique years in the dataset
+unique_years <- unique(hurricanes$year)
+
+# Create a map for each unique year
+for (year in unique_years) {
+  # Filter the dataset for the current year
+  year_data <- hurricanes %>% filter(year == year)
+  
+  # Create a leaflet map for the current year
+  map <- leaflet(data = year_data) %>%
+    addTiles()  # Add a default basemap
+    
+  # Enable marker clustering (optional)
+  map <- map %>%
+    addMarkers(lng = ~long, lat = ~lat,
+               clusterOptions = markerClusterOptions(),  # Enable marker clustering
+               popup = ~paste("Year: ", year, "<br>Storm Identifier: ", storm_identifier))  # Display year and storm identifiers
+
+  # Display the map for the current year
+  print(map)
+}
+
+```
+
+```{r}
+library(dplyr)
+library(leaflet)
+
+# Filter the dataset to include only storms from the year 2010
+storms_2010 <- hurricanes %>% filter(year == 2010)
+
+# Modify the storm_identifier column to remove "_2010" (assuming it's a character string)
+storms_2010$storm_identifier <- gsub("_2010", "", storms_2010$storm_identifier)
+
+# Create a leaflet map for the storms from 2010
+map <- leaflet(data = storms_2010) %>%
+  addTiles()  # Add a default basemap
+
+# Enable marker clustering (optional)
+map <- map %>%
+  addMarkers(lng = ~long, lat = ~lat,
+             clusterOptions = markerClusterOptions(),  # Enable marker clustering
+             popup = ~paste(storm_identifier))  # Display modified storm identifiers
+
+# Add a custom title to the map
+map <- map %>%
+  addControl(html = '<h3 style="text-align: center;">Year 2010</h3>', position = "topright")
+
+# Display the map
+map
+
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Group the dataset by year and count the number of hurricanes in each year
+hurricane_counts <- hurricanes %>%
+  group_by(year) %>%
+  summarize(hurricane_count = n())
+
+# Create a bar chart to visualize the frequency of hurricanes for each year
+ggplot(data = hurricane_counts, aes(x = year, y = hurricane_count)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "blue") +
+  labs(
+    title = "Frequency of Hurricanes by Year",
+    x = "Year",
+    y = "Number of Hurricanes"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Group the dataset by year and count the number of hurricanes in each year
+hurricane_counts <- hurricanes %>%
+  group_by(year) %>%
+  summarize(hurricane_count = n())
+
+# Create a point plot with a best-fit line and angled x-axis labels
+ggplot(data = hurricane_counts, aes(x = year, y = hurricane_count)) +
+  geom_point(color = "green4", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "maroon") +  # Add a best-fit line
+  labs(
+    title = "Frequency of Hurricanes by Year",
+    x = "Year",
+    y = "Number of Hurricanes"
+  ) +
+  scale_x_continuous(breaks = unique(hurricane_counts$year)) +  # Set x-axis breaks to every year
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Set label angle to 45 degrees
+
+```

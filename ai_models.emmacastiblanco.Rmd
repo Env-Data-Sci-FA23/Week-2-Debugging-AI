@@ -1,0 +1,209 @@
+---
+title: "ai_model_assignment"
+author: "Katie Willi and Caitlin Mothes"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+For this assignment, copy and paste both **your question to the chat bot** as well as **the chat bot's response** below each assignment question.
+
+1)  Ask an AI chat bot (like ChatGPT or Claude) what the following chunk of code does:
+
+```{r}
+library(palmerpenguins)
+
+data("penguins")
+
+step_one <- function(x){
+  x <- as.character(x)
+  }
+
+species_list <- unlist(lapply(penguins$species, step_one))
+adelie_indices <- which(species_list == "Adelie")
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+**Question posed to chat bot:** Did not even ask a question. I just copied and pasted the code.
+
+**Chat bot response:** The R code you've provided loads the `palmerpenguins` package, which contains the `penguins` dataset, and then extracts a subset of the data for Adelie penguins. Here's a breakdown of the code:
+
+1.  Load the `palmerpenguins` package and load the `penguins` dataset.
+
+``` r
+library(palmerpenguins)
+data("penguins")
+```
+
+This code loads the package and loads the penguins dataset into the R environment.
+
+2.  Define a function called `step_one` that converts the input to a character.
+
+``` r
+step_one <- function(x){
+  x <- as.character(x)
+}
+```
+
+The `step_one` function takes an input `x` and converts it into a character. However, this function doesn't seem to be used in the subsequent code.
+
+3.  Create a list of species names in the `penguins` dataset.
+
+``` r
+species_list <- unlist(lapply(penguins$species, step_one))
+```
+
+In this line, you're creating a new character vector named `species_list`. You're using the `lapply` function to apply the `step_one` function to each element of the `penguins$species` column, and then `unlist` is used to convert the resulting list into a character vector. However, in this case, the `step_one` function is not modifying the data since it just converts it to a character, and `penguins$species` is already a character vector, so this step is unnecessary.
+
+4.  Find the indices of Adelie penguins in the `species_list`.
+
+``` r
+adelie_indices <- which(species_list == "Adelie")
+```
+
+In this line, you're using the `which` function to find the indices where the species is "Adelie" in the `species_list` vector. This creates a numeric vector of indices.
+
+5.  Subset the `penguins` dataset to get Adelie penguins.
+
+``` r
+adelie_penguins <- penguins[adelie_indices, ]
+```
+
+Here, you're using the `adelie_indices` vector to subset the `penguins` dataset. The resulting `adelie_penguins` data frame will contain only the rows where the species is "Adelie."
+
+In summary, the code loads the `penguins` dataset, converts the species names to characters (although this step is not necessary), finds the indices of Adelie penguins, and then extracts a subset of the dataset containing only Adelie penguins.
+
+2\. Ask the AI model to simplify the code in question 1.
+
+**Question to chat bot:** Please simplify the code I gave you.
+
+**Chat bot response:**
+
+Certainly, here's a simplified version of your R code:
+
+``` r
+library(palmerpenguins)
+data("penguins")
+
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+```
+
+This code achieves the same result by directly subsetting the `penguins` dataset to get only the Adelie penguins without the need for the `step_one` function and the intermediate `species_list`.
+
+3.  Is the AI model's response to Question 2 in the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the `%>%` pipe, etc.)?
+
+**Question to chat bot:** When I asked you to simplify the code I gave you, did you use the {tidyverse} style (e.g., does the response use any {tidyverse} functions, the %\>% pipe, etc.)?
+
+**Chat bot response:**
+
+No, the simplified code I provided does not use {tidyverse} functions or the `%>%` pipe. It's written in base R syntax, which is a straightforward and simplified version of your original code using base R functions. If you prefer a {tidyverse}-style approach, you can achieve the same result using functions like `filter` and `%in%` as follows:
+
+``` r
+library(palmerpenguins)
+data("penguins")
+library(dplyr)
+
+adelie_penguins <- penguins %>% 
+  filter(species %in% "Adelie")
+```
+
+This code uses the `{dplyr}` package and the `%>%` pipe to filter the `penguins` dataset to get the Adelie penguins.
+
+4.  If the AI model's response did not use the {tidyverse}, ask it to convert the code into {tidyverese} style. If your response already used the {tidyverse}, make a guess as to why it might have already done so. *\<--- just a thought experiment, don't worry too much about how you answer this!*
+
+**Question to chat bot** (*if your previous question was not in tidyverse)*: Could you provide the simplified code in tidyverse style, please?
+
+**Chat bot response:**
+
+Certainly, here's the simplified code using the `{tidyverse}` style:
+
+``` r
+library(palmerpenguins)
+data("penguins")
+library(dplyr)
+
+adelie_penguins <- penguins %>%
+  filter(species == "Adelie")
+```
+
+In this code, we load the `palmerpenguins` package, the dataset, and the `{dplyr}` package. We then use the `{dplyr}` package's `filter` function to subset the `penguins` dataset, selecting only the rows where the `species` column is equal to "Adelie." This code follows the `{tidyverse}` style with the use of the `%>%` pipe operator and the `filter` function.
+
+5.  Does the code that ChatGPT put together for you work? If it doesn't, ask the chat bot to fix it. Does it work now?
+
+    ```{r}
+    library(palmerpenguins)
+    data("penguins")
+    library(dplyr)
+
+    adelie_penguins <- penguins %>%
+      filter(species == "Adelie")
+    ```
+
+    The code works!
+
+6.  Ask the chat bot if there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R).
+
+**Question posed to chat bot:** Is there a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set (using R)?
+
+**Chat bot response:**
+
+To determine if there is a significant difference in bill length across Adelie penguin sexes in the `palmerpenguins` dataset using R, you can perform a statistical test. A common test for this type of comparison is a t-test. Here's how you can perform the t-test:
+
+``` r
+library(palmerpenguins)
+data("penguins")
+
+# Subset the data for Adelie penguins
+adelie_penguins <- penguins[penguins$species == "Adelie", ]
+
+# Perform an independent two-sample t-test to compare bill length by sex
+t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+# Print the results
+print(t_test_result)
+```
+
+In this code:
+
+1.  We first load the `palmerpenguins` package and the dataset.
+
+2.  We subset the data to include only Adelie penguins.
+
+3.  We perform an independent two-sample t-test using the `t.test` function. We compare the bill length (`bill_length_mm`) by the `sex` variable in the `adelie_penguins` dataset.
+
+4.  Finally, we print the results of the t-test, which will include information about the difference in bill length between the male and female Adelie penguins, along with p-values indicating whether the difference is statistically significant.
+
+By analyzing the output of the t-test, you can determine whether there is a significant difference in bill length between Adelie penguin sexes in the `palmerpenguins` dataset. A small p-value (typically less than 0.05) would suggest a significant difference.
+
+7.  Does the code produced work? (*Copy and paste the code in R Studio console to run it).* If not, what was wrong with it's answer?
+
+    ```{r}
+    library(palmerpenguins)
+    data("penguins")
+
+    # Subset the data for Adelie penguins
+    adelie_penguins <- penguins[penguins$species == "Adelie", ]
+
+    # Perform an independent two-sample t-test to compare bill length by sex
+    t_test_result <- t.test(bill_length_mm ~ sex, data = adelie_penguins)
+
+    # Print the results
+    print(t_test_result)
+    ```
+
+    It works too!
+
+8.  Did the chat bot's response include an assessment of whether the Adelie penguins data met the assumptions of the statistical test used in the response? (e.g., test for normality or equal variances)? If not, pose the question again to test for the assumptions and paste the new question/response below.
+
+    It did not include an assessment.
+
+**Question to chat bot:** Could you provide the answer to whether or not there is a significant difference in bill length across Adelie penguin sexes in the {palmerpenguins} data set?
+
+**Chat bot response:** I don't have access to the specific data or the ability to execute code in real-time, so I can't provide you with the exact results from running the t-test on the **`palmerpenguins`** dataset. You can execute the code I provided earlier to obtain the results of the t-test.
+
+The t-test results will provide you with a p-value, and based on the p-value, you can determine whether there is a significant difference in bill length across Adelie penguin sexes. If the p-value is less than a chosen significance level (e.g., 0.05), you can conclude that there is a significant difference. If the p-value is greater than the significance level, you would not find a significant difference.
+
+Please run the code I provided, and then inspect the **`t_test_result`** object to determine the significance of the difference in bill length between male and female Adelie penguins in the **`palmerpenguins`** dataset.
